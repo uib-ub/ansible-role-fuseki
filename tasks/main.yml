@@ -1,17 +1,13 @@
 ---
-- name: Ensure fuseki_user group exists.
-  group:
-    name: "{{ fuseki_user }}"
-    state: present
-  when: fuseki_create_user
 
 - name: Ensure fuseki_user exists.
   user:
     name: "{{ fuseki_user }}"
     group: "{{ fuseki_user }}"
-    shell: "/bin/bash"
+    system: yes
     state: present
   when: fuseki_create_user
+  become: true
 
 - name: Check if Fuseki and Jena have been installed already.
   stat:
@@ -35,23 +31,27 @@
     copy: no
   with_items: "{{ fuseki_download_status.results }}"
   when: item.changed == true
+  become: true
 
 - name: Delete Fuseki and Jena downloads.
   file:
     path: "{{ fuseki_workspace }}/{{ item }}-{{fuseki_version }}.tar.gz"
     state: absent
   with_items: "{{ fuseki_components }}"
+  become: true
 
 - name: Configure environment ($PATH).
   template:
     src: "env.sh.j2"
     dest: "/etc/profile.d/fuseki.sh"
+  become: true
 
 - name: Configure Fuseki defaults.
   template:
     src: "fuseki-defaults.j2"
     dest: "/etc/default/fuseki"
   notify: restart fuseki
+  become: true
 
 - name: Ensure that $FUSEKI_BASE exists.
   file:
@@ -78,6 +78,7 @@
     mode: 0660
   with_items: "{{ fuseki_configurations }}"
   notify: restart fuseki
+  become: true
 
 - name: Copy Fuseki systemd unit file into place (Debian).
   template:
@@ -86,14 +87,7 @@
     owner: root
     group: root
     mode: 0755
-  when: ansible_os_family == 'Debian'
-
-- name: Link Fuseki service script into /etc/init.d (Redhat).
-  file:
-    src: "{{ fuseki_service_script }}"
-    dest: /etc/init.d/fuseki
-    state: link
-  when: ansible_os_family == 'RedHat'
+  become: true
 
 - name: Ensure Fuseki is started and enabled on boot if configured.
   service:
@@ -102,12 +96,3 @@
     enabled: yes
   when: fuseki_service_manage
 
-- name: Allow fuseki user to stop/start the service
-  lineinfile:
-    dest: /etc/sudoers
-    state: present
-    line: "{{ item }}"
-    validate: visudo -cf %s
-  with_items:
-    - "{{ fuseki_user }} ALL=NOPASSWD: /bin/systemctl stop fuseki.service"
-    - "{{ fuseki_user }} ALL=NOPASSWD: /bin/systemctl start fuseki.service"

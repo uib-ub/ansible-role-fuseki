@@ -3,3 +3,4 @@
   service:
     name: "fuseki"
     state: restarted
+  become: true

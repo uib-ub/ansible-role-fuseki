@@ -40,6 +40,15 @@
   when: item.changed == true
   become: true
 
+- name: Create symlink to unnumbered apache jena
+  file:
+    src: "{{fuseki_install_dir}}/apache-jena-fuseki-{{ fuseki_version }}"
+    dest: "{{ fuseki_home }}"
+    state: link
+    owner: "{{fuseki_user}}"
+    group: "{{fuseki_user}}"
+  become: true
+
 - name: Delete Fuseki and Jena downloads.
   file:
     path: "{{ fuseki_workspace }}/{{ item }}-{{fuseki_version }}.tar.gz"

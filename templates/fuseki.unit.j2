@@ -32,14 +32,14 @@ Description=Fuseki
 
 [Service]
 # Edit environment variables to match your installation
-Environment=FUSEKI_HOME=/opt/fuseki
-Environment=FUSEKI_BASE=/etc/fuseki
+Environment=FUSEKI_HOME={{ fuseki_home }}
+Environment=FUSEKI_BASE={{ fuseki_base }}
 # Edit the line below to adjust the amount of memory allocated to Fuseki
 Environment=JVM_ARGS=-Xmx2G
 # Edit to match your installation
-ExecStart=/opt/fuseki/fuseki-server
+ExecStart={{ fuseki_home }}/fuseki-server
 # Run as user "fuseki"
-User=fuseki
+User={{ fuseki_user }}
 Restart=on-abort
 # Java processes exit with status 143 when terminated by SIGTERM, this
 # should be considered a successful shutdown

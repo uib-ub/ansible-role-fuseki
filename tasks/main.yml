@@ -1,6 +1,6 @@
 ---
 - name: fuseki present
-  shell: /bin/true
+  command: "echo fuseki"
   register: fuseki_present
   when: "'apache-jena-fuseki' in fuseki_components"
     
@@ -110,6 +110,6 @@
       enabled: yes
     when: fuseki_service_manage
     notify: fuseki restart
-  when: "fuseki_present"
+  when: "fuseki_present == 'fuseki'"
   become: true
 

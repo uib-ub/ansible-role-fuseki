@@ -16,7 +16,7 @@ fuseki_base: "/var/fuseki"
 fuseki_home: "/opt/apache-jena-fuseki-{{ fuseki_version }}"
 fuseki_service_script: "{{ fuseki_home }}/fuseki"
 
-fuseki_java_opts: ""
+fuseki_java_opts: "-Xmx2g"
 
 fuseki_service_manage: True
 fuseki_service_state: started

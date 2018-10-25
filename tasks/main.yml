@@ -104,12 +104,12 @@
       mode: 0755
 
   - name: "Ensure Fuseki is started and enabled on boot if configured"
-    service:
+    systemd:
       name: "fuseki"
       state: "{{ fuseki_service_state }}"
       enabled: yes
     when: fuseki_service_manage
     notify: fuseki restart
-  when: "fuseki_present.stout == 'fuseki'"
+  when: "fuseki_present.stdout == 'fuseki'"
   become: true
 

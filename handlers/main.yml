@@ -1,6 +1,5 @@
----
-- name: restart fuseki
-  service:
+- name: "fuseki restart"
+  systemd: 
     name: "fuseki"
-    state: restarted
+    state: "restarted"
   become: true

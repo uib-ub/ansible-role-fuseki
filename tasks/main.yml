@@ -110,6 +110,6 @@
       enabled: yes
     when: fuseki_service_manage
     notify: fuseki restart
-  when: "fuseki_present == 'fuseki'"
+  when: "fuseki_present.stout == 'fuseki'"
   become: true
 

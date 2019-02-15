@@ -20,7 +20,7 @@ PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
     .
 
 <#dataset> rdf:type tdb2:DatasetTDB2 ;
-    tdb:location "{{ fuseki_base }}/databases/{{ item.name }}" ;
+    tdb2:location "{{ fuseki_base }}/databases/{{ item.name }}" ;
 {% if item.union_default_graph|default(true) %}
     tdb:unionDefaultGraph true ;
 {% endif %}

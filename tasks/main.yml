@@ -94,7 +94,6 @@
       group: "{{ fuseki_user }}"
       mode: 0660
     with_items: "{{ fuseki_configurations }}"
-    notify: "fuseki restart"
 
   - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
     template:
@@ -110,7 +109,6 @@
       state: "{{ fuseki_service_state }}"
       enabled: yes
     when: fuseki_service_manage
-    notify: fuseki restart
   when: "fuseki_present.stdout == 'fuseki'"
   become: true
 

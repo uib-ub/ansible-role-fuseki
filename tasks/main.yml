@@ -73,6 +73,7 @@
     template:
       src: "fuseki-defaults.j2"
       dest: "/etc/default/fuseki"
+    notify: "fuseki restart"
 
   - name: "Ensure that $FUSEKI_BASE, and subdirs configuration and databases exists."
     file:
@@ -94,6 +95,7 @@
       group: "{{ fuseki_user }}"
       mode: 0660
     with_items: "{{ fuseki_configurations }}"
+    notify: "fuseki restart"
 
   - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
     template:
@@ -102,13 +104,23 @@
       owner: root
       group: root
       mode: 0755
-
+    notify: "fuseki restart"
+  
   - name: "Ensure Fuseki is started and enabled on boot if configured"
     systemd:
       name: "fuseki"
       state: "{{ fuseki_service_state }}"
       enabled: yes
     when: fuseki_service_manage
+    register: fuseki_started
+ 
+  - name: "allow communication to localhost fuseki (3030)"
+    seport:
+      ports: "3030"
+      setype: "http_port_t"
+      state: "present"
+      proto: "tcp"
+    become: true
+    when: "fuseki_allow_httpd"
   when: "fuseki_present.stdout == 'fuseki'"
   become: true
-

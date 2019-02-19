@@ -5,7 +5,7 @@ fuseki_components:
 
 fuseki_workspace: "/home/centos"
 fuseki_create_user: True
-
+fuseki_allow_httpd: false
 fuseki_user: "fuseki"
 
 fuseki_version: "3.10.0"
@@ -13,10 +13,9 @@ fuseki_mirror: "https://archive.apache.org/dist"
 
 fuseki_install_dir: "/opt"
 fuseki_base: "/var/fuseki"
-fuseki_home: "/opt/apache-jena-fuseki-{{ fuseki_version }}"
-fuseki_service_script: "{{ fuseki_home }}/fuseki"
+fuseki_home: "/opt/fuseki"
 
-fuseki_java_opts: "-Xmx2g"
+fuseki_java_opts: "-Xmx2g -server"
 
 fuseki_service_manage: True
 fuseki_service_state: started

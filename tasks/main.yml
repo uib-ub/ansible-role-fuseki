@@ -109,15 +109,6 @@
   - name: "Import compacting tasks"
     import_tasks: "compacting.yml"
     when: fuseki_compacting
-  - name: "Copy Fuseki compacting into place" 
-    template:
-      src: fuseki-compacting.unit.j2
-      dest: /etc/systemd/system/fuseki-compacting.service
-
-  - name: "Copy Fuseki compacting Timer into place"
-    template:
-      src: "fuseki-compacting.timer.j2"
-      dest: "/etc/systemd/system/fuseki-compacting.timer"
 
   - name: "Ensure Fuseki is started and enabled on boot if configured"
     systemd:

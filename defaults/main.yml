@@ -15,8 +15,9 @@ fuseki_install_dir: "/opt"
 fuseki_base: "/var/fuseki"
 fuseki_home: "/opt/fuseki"
 
+jena_home: "/opt/jena"
 fuseki_java_opts: "-Xmx2g -server"
-
+fuseki_compacting: false
 fuseki_service_manage: True
 fuseki_service_state: started
 

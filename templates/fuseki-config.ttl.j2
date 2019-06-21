@@ -2,14 +2,21 @@
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
-PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
+@prefix tdb2:    <http://jena.apache.org/2016/tdb#> .
+@prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
 @prefix :        <#> .
+
+
+{{  item.extra_conf | default('') }}
 
 <#service> rdf:type fuseki:Service ;
     fuseki:name "{{ item.name }}" ;
     fuseki:serviceQuery "query" ;
-    fuseki:dataset <#dataset> ;
+{% if item.elastic | bool == false or item.elastic is undefined %}    fuseki:dataset <#dataset> ;
+{% else %}
+   fuseki:dataset <#text_dataset> ;
+ {% endif %}
 {% if item.read_write|default(false) %}
     fuseki:serviceUpdate "update" ;
     fuseki:serviceUpload "upload" ;
@@ -18,6 +25,41 @@ PREFIX tdb2:    <http://jena.apache.org/2016/tdb#>
     fuseki:serviceReadGraphStore "data" ;
 {% endif %}
     .
+  # From https://jena.apache.org/documentation/query/text-query.html
+{% if item.elastic | bool %}
+    <#text_index> a text:TextIndexES ;
+    # A comma-separated list of Host:Port values of the ElasticSearch Cluster nodes.
+    text:serverList "{{ item.es_server_name | default('127.0.0.1:9300') }}" ; 
+      # Name of the ElasticSearch Cluster. If not specified defaults to 'elasticsearch'
+    text:clusterName "{{ item.es_cluster_name | default('es_cluster') }}" ; 
+      # The number of shards for the index. Defaults to 1
+    text:shards "{{ es_shards | default('1') }}" ;
+      # The number of replicas for the index. Defaults to 1
+    text:replicas "1" ;         
+      # Name of the Index. defaults to jena-text
+    text:indexName "{{ item.es_index_name }}" ;
+    text:entityMap <#entMap> ;
+    .
+ 
+    <#entMap> a text:EntityMap ;
+    text:defaultField     "label" ;
+    text:entityField      "uri" ;
+    text:uidField         "uid" ;
+    text:langField        "lang" ;
+    text:graphField       "graph" ;
+        text:map (
+         [ text:field "label" ; 
+           text:predicate rdfs:label ]
+         ) .
+    {% endif %}
+
+
+{% if item.elastic %}   
+<#text_dataset> rdf:type text:TextDataset ;
+   text:dataset <#dataset> ;
+   text:index <#text_index> 
+ . 
+{% endif %}
 
 <#dataset> rdf:type tdb2:DatasetTDB2 ;
     tdb2:location "{{ fuseki_base }}/databases/{{ item.name }}" ;

@@ -8,7 +8,7 @@
   group:
     name: "{{ fuseki_user }}"
     state: present
-  when: fuseki_create_user
+  when: fuseki_create_user | bool
   become: true
 
 - name: Ensure fuseki_user exists.
@@ -17,7 +17,7 @@
     group: "{{ fuseki_user }}"
     system: yes
     state: present
-  when: fuseki_create_user
+  when: fuseki_create_user | bool
   become: true
 
 - name: Check if Fuseki and Jena have been installed already.
@@ -108,14 +108,17 @@
   
   - name: "Import compacting tasks"
     import_tasks: "compacting.yml"
-    when: fuseki_compacting
+    when: fuseki_compacting | bool
+
+  - name: "Import modules.yml"
+    import_tasks: "modules.yml"
 
   - name: "Ensure Fuseki is started and enabled on boot if configured"
     systemd:
       name: "fuseki"
       state: "{{ fuseki_service_state }}"
       enabled: yes
-    when: fuseki_service_manage
+    when: fuseki_service_manage | bool
     register: fuseki_started
  
   - name: "allow communication to localhost fuseki (3030)"
@@ -125,6 +128,6 @@
       state: "present"
       proto: "tcp"
     become: true
-    when: "fuseki_allow_httpd"
+    when: "fuseki_allow_httpd | bool"
   when: "fuseki_present.stdout == 'fuseki'"
   become: true

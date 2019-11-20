@@ -93,9 +93,19 @@
       dest: "{{ fuseki_base }}/configuration/{{ item.name }}.ttl"
       owner: "{{ fuseki_user }}"
       group: "{{ fuseki_user }}"
-      mode: 0660
+      mode: 0440
     with_items: "{{ fuseki_configurations }}"
     notify: "fuseki restart"
+
+  - name: "Copy fuseki configuration files"
+    copy:
+      src: "{{ item.config }}"
+      dest: "{{ fuseki_base }}/configuration/{{ item.name }}.ttl"
+      owner: "{{ fuseki_user }}"
+      group: "{{ fuseki_group }}"
+      mode: "0440"
+    when: item.config is defined
+    with_items: "{{ fuseki_configuration }}"
 
   - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
     template:

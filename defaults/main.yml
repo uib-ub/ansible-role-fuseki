@@ -15,7 +15,7 @@ fuseki_install_dir: "/opt"
 fuseki_base: "/var/fuseki"
 fuseki_home: "/opt/fuseki"
 
-fuseki_modules: 
+fuseki_modules: []
 jena_home: "/opt/jena"
 fuseki_java_opts: "-Xmx2g\\s-server" # see https://www.freedesktop.org/software/systemd/man/systemd.service.html#id-1.9.26 for escape table for systemd.service. Use double escapes. 
 fuseki_compacting: false

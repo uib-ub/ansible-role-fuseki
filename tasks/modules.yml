@@ -15,4 +15,4 @@
     url: "{{ item }}"
     dest: "{{ fuseki_home }}/lib/"
   with_items: "{{ fuseki_modules }}"
-  when: "fuseki_modules | length > 0"
+  when: "fuseki_modules is defined and fuseki_modules | length > 0"

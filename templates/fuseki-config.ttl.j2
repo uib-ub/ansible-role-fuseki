@@ -26,7 +26,7 @@
 {% endif %}
     .
   # From https://jena.apache.org/documentation/query/text-query.html
-{% if item.elastic | bool %}
+{% if item.elastic | default(false)| bool %}
     <#text_index> a text:TextIndexES ;
     # A comma-separated list of Host:Port values of the ElasticSearch Cluster nodes.
     text:serverList "{{ item.es_server_name | default('127.0.0.1:9300') }}" ; 
@@ -54,7 +54,7 @@
     {% endif %}
 
 
-{% if item.elastic %}   
+{% if item.elastic | default (false) %}   
 <#text_dataset> rdf:type text:TextDataset ;
    text:dataset <#dataset> ;
    text:index <#text_index> 

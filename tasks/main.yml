@@ -123,6 +123,12 @@
   - name: "Import modules.yml"
     import_tasks: "modules.yml"
 
+  - name: "make sure fuseki server is executable"
+    file:
+      path: "{{ fuseki_home }}/fuseki-server"
+      mode: "+x"
+    become: true
+
   - name: "Ensure Fuseki is started and enabled on boot if configured"
     systemd:
       name: "fuseki"

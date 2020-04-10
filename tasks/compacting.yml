@@ -14,10 +14,4 @@
     name: "fuseki-compact.timer"
     state: started
 
-- name: "Add fuseki start for {{ fuseki_user }} to sudoers file"
-  lineinfile:
-    path: /etc/sudoers
-    line: "{{ item }}"
-    validate: '/usr/sbin/visudo -cf %s'
-  with_items:
-  - "{{ fuseki_user }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl start fuseki.service"
+- import_tasks: "sysctl_sudoers.yml"

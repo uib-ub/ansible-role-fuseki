@@ -6,14 +6,19 @@
 @prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
 @prefix :        <#> .
-
+{{ item.prefix | default('') }}
 
 {{  item.extra_conf | default('') }}
 
 <#service> rdf:type fuseki:Service ;
     fuseki:name "{{ item.name }}" ;
     fuseki:serviceQuery "query" ;
+{% if item.lucene | default(false) | bool == false %}
     fuseki:dataset <#dataset> ;
+{% else %}
+    fuseki:dataset <#text_dataset> ;
+{% endif %}
+   
 {% if item.read_write|default(false) %}
     fuseki:serviceUpdate "update" ;
     fuseki:serviceUpload "upload" ;
@@ -22,6 +27,29 @@
     fuseki:serviceReadGraphStore "data" ;
 {% endif %}
     .
+
+{% if item.lucene | default(false) | bool %}
+
+<#service2> rdf:type fuseki:Service ;
+    fuseki:name "{{ item.name }}_write" ;
+    fuseki:dataset <#dataset> ;
+    fuseki:serviceReadWriteGraphStore "data" ;
+    .
+{% endif %}
+
+{% if item.lucene | default(false) | bool %}
+<#text_dataset> rdf:type text:TextDataset ;
+   text:dataset <#dataset> ;
+   text:index <#text_index> ;
+.
+<#text_index> a text:TextIndexLucene ;
+    text:directory <{{ fuseki_base }}/databases/{{ item.name }}/Lucene> ;
+    text:entityMap <#entMap> ;
+.
+<#entMap> a text:EntityMap ;
+    {{ item.entity_map }}
+.
+{% endif %}
 
 <#dataset> rdf:type tdb2:DatasetTDB2 ;
     tdb2:location "{{ fuseki_base }}/databases/{{ item.name }}" ;

@@ -105,7 +105,8 @@
       group: "{{ fuseki_group }}"
       mode: "0440"
     when: item.config is defined
-    with_items: "{{ fuseki_configuration }}"
+    with_items: "{{ fuseki_configurations }}"
+
 
   - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
     template:
@@ -122,6 +123,10 @@
 
   - name: "Import modules.yml"
     import_tasks: "modules.yml"
+  
+  - name: "Import reindex.yml"
+    import_tasks: "reindex.yml"
+    when: "fuseki_lucene | default (false) | bool"
 
   - name: "make sure fuseki server is executable"
     file:

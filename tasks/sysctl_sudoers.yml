@@ -6,4 +6,5 @@
   with_items:
   - "{{ fuseki_user }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl start fuseki.service"
   - "{{ fuseki_user }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop fuseki.service"
+  - "{{ fuseki_user }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl start fuseki-compact.service"
 

@@ -6,6 +6,17 @@
 @prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
 @prefix :        <#> .
+
+{% if item.dataset_type is undefined or item.dataset_type == 'tdb2' %}
+ {% set dataset_rdf_type = 'tdb2:DatasetTDB2' %}
+ {% set dataset_location_predicate = 'tdb2:location' %}
+{% endif %}
+
+{% if item.dataset_type == 'tdb' %}
+ {% set dataset_rdf_type = 'tdb:DatasetTDB' %}
+ {% set dataset_location_predicate = 'tdb:location' %}
+{% endif %}
+
 {{ item.prefix | default('') }}
 
 {{  item.extra_conf | default('') }}
@@ -51,8 +62,8 @@
 .
 {% endif %}
 
-<#dataset> rdf:type tdb2:DatasetTDB2 ;
-    tdb2:location "{{ fuseki_base }}/databases/{{ item.name }}" ;
+<#dataset> rdf:type {{ dataset_rdf_type }} ;
+   {{ dataset_location_predicate }} "{{ fuseki_base }}/databases/{{ item.name }}" ;
 {% if item.union_default_graph|default(true) %}
     tdb:unionDefaultGraph true ;
 {% endif %}

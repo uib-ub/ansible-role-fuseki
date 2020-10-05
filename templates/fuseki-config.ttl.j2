@@ -13,7 +13,7 @@
  {% set dataset_location_predicate = 'tdb2:location' %}
 {% endif %}
 
-{% if item.dataset_type == 'tdb' %}
+{% if item.dataset_type is defined and item.dataset_type == 'tdb' %}
  {% set dataset_rdf_type = 'tdb:DatasetTDB' %}
  {% set dataset_location_predicate = 'tdb:location' %}
 {% endif %}

@@ -79,7 +79,7 @@
 
 {% if item.spatial | default (false) or item.spatialtext | default(false) %}
 
-<#spatial_index> a spatial:SpatialIndexLucene ;   i
+<#spatial_index> a spatial:SpatialIndexLucene ;
   spatial:directory <{{ fuseki_base }}/databases/{{ item.name }}/Lucene-geo> ;
   spatial:definition <#spatial_definition>
 .

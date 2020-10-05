@@ -31,8 +31,8 @@
 {% endif %}
    
 {% if item.read_write|default(false) %}
-    fuseki:serviceUpdate "update" ;
-    fuseki:serviceUpload "upload" ;
+#    fuseki:serviceUpdate "update" ;
+#    fuseki:serviceUpload "upload" ;
     fuseki:serviceReadWriteGraphStore "data" ;
 {% elif item.read_graph_store|default(true) %}
     fuseki:serviceReadGraphStore "data" ;

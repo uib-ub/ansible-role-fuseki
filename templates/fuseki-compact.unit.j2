@@ -2,14 +2,12 @@
 Description=Fuseki Compacting
 Conflicts=fuseki.service fuseki-backup.service
 [Service]
-Type=oneshot
-RemainAfterExit=yes
 # Edit environment variables to match your installation
 Environment=FUSEKI_HOME={{ fuseki_home }}
 Environment=FUSEKI_BASE={{ fuseki_base }}
 Environment=JENA_HOME={{ jena_home }}
 ExecStart=/usr/bin/sh -c '/usr/bin/find $FUSEKI_BASE -maxdepth 2 -ipath "*databases/*" -exec $JENA_HOME/bin/tdb2.tdbcompact --loc {} \;'
-ExecStart=/usr/bin/sh -c 'find $FUSEKI_BASE -maxdepth 2 -ipath "*databases/*" |while read file; do find $file -type d -path "*Data-*" | sort | head -1  | xargs rm -r   ; done'
+ExecStopPost=/usr/bin/sh -c 'find $FUSEKI_BASE -maxdepth 2 -ipath "*databases/*" |while read file; do find $file -type d -path "*Data-*" | sort | head -1  | xargs rm -r   ; done'
 # Run as user "fuseki"
 User={{ fuseki_user }}
 # Java processes exit with status 143 when terminated by SIGTERM, this

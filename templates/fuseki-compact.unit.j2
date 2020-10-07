@@ -3,6 +3,7 @@ Description=Fuseki Compacting
 Conflicts=fuseki.service fuseki-backup.service
 [Service]
 Type=oneshot
+RemainAfterExit=yes
 # Edit environment variables to match your installation
 Environment=FUSEKI_HOME={{ fuseki_home }}
 Environment=FUSEKI_BASE={{ fuseki_base }}

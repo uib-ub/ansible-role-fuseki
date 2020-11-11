@@ -5,7 +5,19 @@
 @prefix tdb2:    <http://jena.apache.org/2016/tdb#> .
 @prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
+@prefix spatial: <http://jena.apache.org/spatial#> .
 @prefix :        <#> .
+
+{% if item.dataset_type is undefined or item.dataset_type == 'tdb2' %}
+ {% set dataset_rdf_type = 'tdb2:DatasetTDB2' %}
+ {% set dataset_location_predicate = 'tdb2:location' %}
+{% endif %}
+
+{% if item.dataset_type is defined and item.dataset_type == 'tdb' %}
+ {% set dataset_rdf_type = 'tdb:DatasetTDB' %}
+ {% set dataset_location_predicate = 'tdb:location' %}
+{% endif %}
+
 {{ item.prefix | default('') }}
 
 {{  item.extra_conf | default('') }}
@@ -20,8 +32,8 @@
 {% endif %}
    
 {% if item.read_write|default(false) %}
-    fuseki:serviceUpdate "update" ;
-    fuseki:serviceUpload "upload" ;
+#    fuseki:serviceUpdate "update" ;
+#    fuseki:serviceUpload "upload" ;
     fuseki:serviceReadWriteGraphStore "data" ;
 {% elif item.read_graph_store|default(true) %}
     fuseki:serviceReadGraphStore "data" ;
@@ -51,8 +63,33 @@
 .
 {% endif %}
 
-<#dataset> rdf:type tdb2:DatasetTDB2 ;
-    tdb2:location "{{ fuseki_base }}/databases/{{ item.name }}" ;
+{% if item.spatial | default(false) | bool %}
+<#spatial_dataset> rdf:type spatial:SpatialDataset ;
+   spatial:dataset   <#dataset> ;
+   spatial:index <#spatial_index> ;
+.
+
+{% endif %}
+
+{# both spatial and text #}
+{% if item.spatialtext | default(false) | bool %}
+{# todo @implement from https://git.app.uib.no/snippets/118 #}
+.
+{% endif %}
+
+{% if item.spatial | default (false) or item.spatialtext | default(false) %}
+
+<#spatial_index> a spatial:SpatialIndexLucene ;
+  spatial:directory <{{ fuseki_base }}/databases/{{ item.name }}/Lucene-geo> ;
+  spatial:definition <#spatial_definition>
+.
+
+<#spatial_definition> a spatial:EntityDefinition ;   spatial:entityField      "uri" ;   spatial:geoField     "geo"   .
+
+{% endif %}
+
+<#dataset> rdf:type {{ dataset_rdf_type }} ;
+   {{ dataset_location_predicate }} "{{ fuseki_base }}/databases/{{ item.name }}" ;
 {% if item.union_default_graph|default(true) %}
     tdb:unionDefaultGraph true ;
 {% endif %}

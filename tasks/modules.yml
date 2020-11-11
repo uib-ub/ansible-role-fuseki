@@ -10,9 +10,17 @@
     line: "java $JVM_ARGS -cp \"$JAR:$FUSEKI_EXTRA\" org.apache.jena.fuseki.cmd.FusekiCmd \"$@\""
     state: "present"
 
+- name: "create lib dir"
+  file:
+    path: "{{ fuseki_home }}/lib"
+    state: "directory"
+    owner: "fuseki"
+  become: true
+
 - name: "Download modules to $JENA_HOME/lib"
   get_url:
     url: "{{ item }}"
     dest: "{{ fuseki_home }}/lib/"
   with_items: "{{ fuseki_modules }}"
   when: "fuseki_modules is defined and fuseki_modules | length > 0"
+  become: true

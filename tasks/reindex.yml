@@ -3,8 +3,9 @@
   authorized_key:
     user: "{{ fuseki_user }}"
     state: present
-    key: "{{ fuseki_public_key}}"
-  become: true 
+    key: "{{ item }}"
+  become: true
+  loop: "{{ fuseki_public_key }}"
   
 - name: "add sudoers command to allow reindex (stop and start fuseki.service)"
   import_tasks: "sysctl_sudoers.yml"

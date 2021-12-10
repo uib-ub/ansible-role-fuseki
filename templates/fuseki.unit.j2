@@ -36,7 +36,7 @@ Environment=FUSEKI_HOME={{ fuseki_home }}
 Environment=FUSEKI_BASE={{ fuseki_base }}
 Environment=FUSEKI_EXTRA={{ fuseki_home }}/lib/*
 # Edit the line below to adjust the amount of memory allocated to Fuseki
-Environment=JVM_ARGS={{ fuseki_java_opts }}
+Environment=JVM_ARGS=-Dlog4j2.formatMsgNoLookups=true\s{{ fuseki_java_opts }}
 # Edit to match your installation
 ExecStart={{ fuseki_home }}/fuseki-server
 # Run as user "fuseki"

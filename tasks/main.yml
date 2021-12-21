@@ -63,10 +63,11 @@
   become: true
 
 - name: "Configure environment ($PATH)."
-    template:
-      src: "env.sh.j2"
-      dest: "/etc/profile.d/fuseki.sh"
-
+  template:
+    src: "env.sh.j2"
+    dest: "/etc/profile.d/fuseki.sh"
+  become: true
+  
 - name: set up and configure fuseki
   block:  
   - name: Configure Fuseki defaults.

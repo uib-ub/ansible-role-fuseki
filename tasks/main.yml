@@ -150,5 +150,5 @@
       proto: "tcp"
     become: true
     when: "fuseki_allow_httpd | bool"
-  when: "fuseki_present.stdout == 'fuseki'"
+  when: "fuseki_present.stdout is defined and fuseki_present.stdout == 'fuseki'"
   become: true

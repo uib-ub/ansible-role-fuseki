@@ -62,13 +62,13 @@
   with_items: "{{ fuseki_components }}"
   become: true
 
-- name: set up and configure fuseki
-  block:
-  - name: "Configure environment ($PATH)."
+- name: "Configure environment ($PATH)."
     template:
       src: "env.sh.j2"
       dest: "/etc/profile.d/fuseki.sh"
 
+- name: set up and configure fuseki
+  block:  
   - name: Configure Fuseki defaults.
     template:
       src: "fuseki-defaults.j2"

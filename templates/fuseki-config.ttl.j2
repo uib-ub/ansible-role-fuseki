@@ -11,11 +11,13 @@
 {% if item.dataset_type is undefined or item.dataset_type == 'tdb2' %}
  {% set dataset_rdf_type = 'tdb2:DatasetTDB2' %}
  {% set dataset_location_predicate = 'tdb2:location' %}
+ {% set dataset_tdb_prefix = 'tdb2' %}
 {% endif %}
 
 {% if item.dataset_type is defined and item.dataset_type == 'tdb' %}
  {% set dataset_rdf_type = 'tdb:DatasetTDB' %}
  {% set dataset_location_predicate = 'tdb:location' %}
+  {% set dataset_tdb_prefix = 'tdb' %}
 {% endif %}
 
 {{ item.prefix | default('') }}
@@ -30,7 +32,7 @@
 {% else %}
     fuseki:dataset <#text_dataset> ;
 {% endif %}
-   
+
 {% if item.read_write|default(false) %}
 #    fuseki:serviceUpdate "update" ;
 #    fuseki:serviceUpload "upload" ;
@@ -91,6 +93,6 @@
 <#dataset> rdf:type {{ dataset_rdf_type }} ;
    {{ dataset_location_predicate }} "{{ fuseki_base }}/databases/{{ item.name }}" ;
 {% if item.union_default_graph|default(true) %}
-    tdb:unionDefaultGraph true ;
+    {{ dataset_tdb_prefix }}:unionDefaultGraph true ;
 {% endif %}
     .

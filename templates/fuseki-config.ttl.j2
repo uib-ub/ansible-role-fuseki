@@ -59,6 +59,9 @@
 <#text_index> a text:TextIndexLucene ;
     text:directory <{{ fuseki_base }}/databases/{{ item.name }}/Lucene> ;
     text:entityMap <#entMap> ;
+    {% if item.luceneStoreValues | default(false) | bool %}
+    text:storeValues true;
+    {% endif %}
 .
 <#entMap> a text:EntityMap ;
     {{ item.entity_map }}

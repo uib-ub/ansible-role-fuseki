@@ -33,20 +33,16 @@
     fuseki:dataset <#text_dataset> ;
 {% endif %}
 
-{% if item.read_write|default(false) %}
-#    fuseki:serviceUpdate "update" ;
-#    fuseki:serviceUpload "upload" ;
-    fuseki:serviceReadWriteGraphStore "data" ;
-{% elif item.read_graph_store|default(true) %}
     fuseki:serviceReadGraphStore "data" ;
-{% endif %}
     .
 
-{% if item.lucene | default(false) | bool %}
+{% if item.read_write | default(false) | default(false) | bool %}
 
 <#service2> rdf:type fuseki:Service ;
     fuseki:name "{{ item.name }}_write" ;
     fuseki:dataset <#dataset> ;
+    fuseki:serviceUpdate "update" ;
+    fuseki:serviceUpload "upload" ;
     fuseki:serviceReadWriteGraphStore "data" ;
     .
 {% endif %}

@@ -1,4 +1,6 @@
 image: docker:stable-dind
+variables:
+  DOCKER_TLS_CERTDIR: "/certs/"
 services:
   - docker:dind
 molecule:

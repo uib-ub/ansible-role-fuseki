@@ -17,6 +17,7 @@
       include_role:
         name: "fuseki"
       vars:
+        fuseki_workspace: "/tmp/"
         fuseki_configurations:
         - name: "test-db"
           read_write: True

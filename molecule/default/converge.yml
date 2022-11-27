@@ -10,7 +10,7 @@
 
     - name: "install java version"
       package:
-        name:  java-17-openjdk 
+        name:  java-11-openjdk
       become: true
 
     - name: "Include fuseki"

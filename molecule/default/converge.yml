@@ -1,0 +1,25 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "update yum"
+      yum:
+        name: "*"
+        state: "latest"
+      become: true
+
+    - name: "install java version"
+      package:
+        name:  java-17-openjdk 
+      become: true
+
+    - name: "Include fuseki"
+      include_role:
+        name: "fuseki"
+      vars:
+        fuseki_configurations:
+        - name: "test-db"
+          read_write: True
+          union_default_graph: False
+
+

@@ -9,7 +9,6 @@ molecule:
     autoconf automake py3-cryptography linux-headers
     musl-dev libffi-dev openssl-dev openssl openssh ca-certificates
   - update-ca-certificates --fresh
-  - docker info
   - python3 --version
   - python3 -m pip install ansible molecule[docker]
   - ansible --version

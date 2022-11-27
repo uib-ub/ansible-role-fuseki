@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: fuseki
+  namespace: "oyvindlgjesdal"
   author: OyvindLGjesdal
   description: Apache Jena/Fuseki SPARQL Server
   company: Pagina GmbH

@@ -153,9 +153,9 @@
   - name: "Ensure Fuseki is started"
     systemd:
       name: "fuseki"
-      state: "{{ fuseki_service_state }}"
+      state: "started"
     when: fuseki_service_manage | bool
-    register: fuseki_started
+    #register: fuseki_started
  
   - name: "allow communication to localhost fuseki (3030)"
     seport:

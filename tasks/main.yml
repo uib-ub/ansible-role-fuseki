@@ -139,6 +139,7 @@
   - name: "Ensure fuseki is enabled"
     systemd:
       name: "fuseki"
+      state: started
       enabled: true
     become: true
 
@@ -156,7 +157,7 @@
       name: "fuseki"
       state: "started"
     when: fuseki_service_manage | bool
-    #register: fuseki_started
+    register: fuseki_started
  
   - name: "allow communication to localhost fuseki (3030)"
     seport:

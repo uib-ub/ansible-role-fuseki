@@ -136,12 +136,16 @@
       mode: "+x"
     become: true
 
-  - name: "Ensure Fuseki is started and enabled on boot if configured"
+  - name: "Ensure fuseki is enabled"
+    systemd:
+      name: "fuseki"
+      enabled: true
+    become: true
+
+  - name: "Ensure Fuseki is started"
     systemd:
       name: "fuseki"
       state: "{{ fuseki_service_state }}"
-      daemon_reload: true
-      enabled: yes
     when: fuseki_service_manage | bool
     register: fuseki_started
  

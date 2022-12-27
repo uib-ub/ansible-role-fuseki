@@ -145,6 +145,7 @@
   - name: debug
     shell: systemctl status fuseki
     register: fuseki_debug_status
+    ignore_errors: true
 
   - name: "debug"
     debug:

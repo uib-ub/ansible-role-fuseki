@@ -140,6 +140,7 @@
     systemd:
       name: "fuseki"
       state: "{{ fuseki_service_state }}"
+      daemon_reload: true
       enabled: yes
     when: fuseki_service_manage | bool
     register: fuseki_started

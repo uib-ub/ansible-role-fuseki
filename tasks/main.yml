@@ -136,6 +136,11 @@
       mode: "+x"
     become: true
 
+  - name: debug running fuseki-server
+    shell: /opt/fuseki/fuseki-server
+    become_user: fuseki
+    become: true
+
   - name: "Ensure fuseki is enabled"
     systemd:
       name: "fuseki"

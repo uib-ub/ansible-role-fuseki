@@ -137,7 +137,7 @@
     become: true
 
   - name: debug running fuseki-server
-    shell: /opt/fuseki/fuseki-server
+    shell: "({{ fuseki_home }}/fuseki-server >/dev/null 2>&1 &)"
     become_user: fuseki
     become: true
 

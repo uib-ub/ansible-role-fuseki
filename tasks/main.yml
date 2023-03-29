@@ -3,6 +3,7 @@
   command: "echo fuseki"
   register: fuseki_present
   when: "'apache-jena-fuseki' in fuseki_components"
+  changed_when: false
     
 - name: Ensure fuseki_user group exists.
   group:
@@ -135,11 +136,33 @@
       mode: "+x"
     become: true
 
-  - name: "Ensure Fuseki is started and enabled on boot if configured"
+  #- name: debug running fuseki-server
+  #  shell: "({{ fuseki_home }}/fuseki-server >/dev/null 2>&1 &)"
+  #  become_user: fuseki
+  #  become: true
+
+  - name: "Ensure fuseki is enabled"
     systemd:
       name: "fuseki"
-      state: "{{ fuseki_service_state }}"
-      enabled: yes
+      state: started
+      enabled: true
+    become: true
+
+  - name: debug
+    shell: systemctl status fuseki
+    register: fuseki_debug_status
+    ignore_errors: true
+    changed_when: false
+
+  - name: "debug"
+    debug:
+      msg: "{{ fuseki_debug_status }}"
+    changed_when: false
+
+  - name: "Ensure Fuseki is started"
+    systemd:
+      name: "fuseki"
+      state: "started"
     when: fuseki_service_manage | bool
     register: fuseki_started
  

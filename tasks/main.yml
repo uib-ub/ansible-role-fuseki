@@ -152,10 +152,12 @@
     shell: systemctl status fuseki
     register: fuseki_debug_status
     ignore_errors: true
+    changed_when: false
 
   - name: "debug"
     debug:
       msg: "{{ fuseki_debug_status }}"
+    changed_when: false
 
   - name: "Ensure Fuseki is started"
     systemd:

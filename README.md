@@ -17,6 +17,7 @@ A Java runtime has to be installed on the target host.
     - name: "test-db"
       read_write: True
       union_default_graph: False
+      service_enhancer: true
 ```
 
 ## Tests

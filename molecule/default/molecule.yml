@@ -10,7 +10,7 @@ platforms:
     pre_build_image: true
     port_bindings: {3030:3030}
     privileged: True
-    command: "/usr/sbin/init"
+    command: "/sbin/init"
     volume_mounts:
     - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
     tmpfs:

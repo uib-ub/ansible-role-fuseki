@@ -10,14 +10,22 @@
 #    line: "java $JVM_ARGS -cp \"$JAR:$FUSEKI_EXTRA\" org.apache.jena.fuseki.cmd.FusekiCmd \"$@\""
 #    state: "present"
 
-- name: "create lib dir"
+- name: "create run/extra dir"
   file:
-    path: "{{ fuseki_home }}/lib"
+    path: "{{ fuseki_home }}/run/extra"
     state: "directory"
     owner: "fuseki"
   become: true
 
-- name: "Download modules to $JENA_HOME/lib"
+- name: "get serviceenhancer"
+  get_url: 
+    url: "https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/{{ fuseki_version }}/jena-serviceenhancer-{{ fuseki_version }}.jar"
+    dest: "{ fuseki_home }}/run/extra"
+  become: true
+  become_user: fuseki
+  when: "selectattr('service_enhancer', 'equalto', true) | fuseki_configuration | count > 0"
+
+- name: "Download modules to $JENA_HOME/run/extra"
   get_url:
     url: "{{ item }}"
     dest: "{{ fuseki_home }}/lib/"

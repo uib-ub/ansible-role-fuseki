@@ -165,14 +165,5 @@
       state: "started"
     when: fuseki_service_manage | bool
     register: fuseki_started
- 
-  - name: "allow communication to localhost fuseki (3030)"
-    seport:
-      ports: "3030"
-      setype: "http_port_t"
-      state: "present"
-      proto: "tcp"
-    become: true
-    when: "fuseki_allow_httpd | bool"
   when: "fuseki_present.stdout is defined and fuseki_present.stdout == 'fuseki'"
   become: true

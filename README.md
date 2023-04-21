@@ -7,12 +7,13 @@ An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/docum
 ## Requirements
 
 A Java runtime has to be installed on the target host.
+When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_network_connect` if fuseki is behind an Apache webserver.
 
 ## Example Playbook
 
 ``` yaml
 - role: geerlingguy.java
-- role: gremid.fuseki
+- role: fuseki
   fuseki_configurations:
     - name: "test-db"
       read_write: True

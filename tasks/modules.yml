@@ -26,7 +26,7 @@
     dest: "{{ fuseki_home }}/run/extra"
   become: true
   become_user: fuseki
-  when: "fuseki_configurations | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
+  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
 
 - name: "Download modules to $JENA_HOME/run/extra"
   get_url:

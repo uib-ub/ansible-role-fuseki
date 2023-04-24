@@ -6,6 +6,7 @@
 @prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
 @prefix spatial: <http://jena.apache.org/spatial#> .
+@prefix se: <http://jena.apache.org/service-enhancer#> .
 @prefix :        <#> .
 
 {% if item.dataset_type is undefined or item.dataset_type == 'tdb2' %}
@@ -89,7 +90,7 @@
 
 {% endif %}
 
-<#dataset> rdf:type {{ dataset_rdf_type }} ;
+<#dataset> rdf:type {{ dataset_rdf_type }} ; {% if item.service_enhancer | default (false) | bool %} rdf:type se:DatasetServiceEnhancer ; {% endif %}
    {{ dataset_location_predicate }} "{{ fuseki_base }}/databases/{{ item.name }}" ;
 {% if item.union_default_graph|default(true) %}
     {{ dataset_tdb_prefix }}:unionDefaultGraph true ;

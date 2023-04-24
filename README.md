@@ -18,6 +18,7 @@ When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_
     - name: "test-db"
       read_write: True
       union_default_graph: False
+      service_enhancer: true
 ```
 
 ## Tests

@@ -1,7 +1,7 @@
 #- name: "comment out normal startup"
 #  lineinfile:
 #    path: "{{ fuseki_home }}/fuseki-server"
-#    regexp: "^(exec \\$JAVA \\$JVM_ARGS -jar.+)" 
+#    regexp: "^(exec \\$JAVA \\$JVM_ARGS -jar.+)"
 #    line: "#\\1"
 
 #- name: "Update fuseki-server to add library modules"
@@ -10,14 +10,25 @@
 #    line: "java $JVM_ARGS -cp \"$JAR:$FUSEKI_EXTRA\" org.apache.jena.fuseki.cmd.FusekiCmd \"$@\""
 #    state: "present"
 
-- name: "create lib dir"
+- name: "create run/extra dir"
   file:
-    path: "{{ fuseki_home }}/lib"
+    path: "{{ fuseki_home }}/{{ item }}"
     state: "directory"
     owner: "fuseki"
   become: true
+  loop:
+  - run
+  - run/extra
 
-- name: "Download modules to $JENA_HOME/lib"
+- name: "get serviceenhancer"
+  get_url:
+    url: "https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/{{ fuseki_version }}/jena-serviceenhancer-{{ fuseki_version }}.jar"
+    dest: "{{ fuseki_home }}/run/extra"
+  become: true
+  become_user: fuseki
+  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
+
+- name: "Download modules to $JENA_HOME/run/extra"
   get_url:
     url: "{{ item }}"
     dest: "{{ fuseki_home }}/lib/"

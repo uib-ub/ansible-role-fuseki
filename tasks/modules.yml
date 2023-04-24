@@ -12,7 +12,7 @@
 
 - name: "create run/extra dir"
   file:
-     path: "{{ fuseki_home }}/{{ item }}"
+    path: "{{ fuseki_home }}/{{ item }}"
     state: "directory"
     owner: "fuseki"
   become: true

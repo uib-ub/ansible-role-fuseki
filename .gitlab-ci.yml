@@ -17,4 +17,6 @@ molecule:
   - ansible --version
   - molecule --version
   - molecule test
+tags:
+  - saxonee
 

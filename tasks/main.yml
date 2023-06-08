@@ -87,7 +87,16 @@
     with_items:
       - "{{ fuseki_base }}"
       - "{{ fuseki_base }}/configuration"
-      - "{{ fuseki_base }}/databases"
+
+  - name: "databases folder is recursively owned and by the fuseki user"
+    file:
+      path: "{{ fuseki_base }}/databases"
+      owner: "{{ fuseki_user }}"
+      group: "{{ fuseki_user }}"
+      mode: 0770
+      recurse: true
+      state: "directory"
+    become: true
 
   - name: "Configure Fuseki"
     template:

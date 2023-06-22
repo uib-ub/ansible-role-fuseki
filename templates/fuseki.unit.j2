@@ -45,7 +45,7 @@ Environment=JVM_ARGS=-Dlog4j2.formatMsgNoLookups=true\s{{ fuseki_java_opts }}
 ExecStart={{ fuseki_home }}/fuseki-server
 # Run as user "fuseki"
 User={{ fuseki_user }}
-Restart=failure
+Restart=on-failure
 # Java processes exit with status 143 when terminated by SIGTERM, this
 # should be considered a successful shutdown
 SuccessExitStatus=143

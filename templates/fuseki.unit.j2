@@ -29,6 +29,10 @@
 
 [Unit]
 Description=Fuseki
+Documentation=https://jena.apache.org/documentation/fuseki2/
+# Don't retry if it fails three times within 60 seconds
+StartLimitBurst=3
+StartLimitIntervalSec=60
 
 [Service]
 # Edit environment variables to match your installation
@@ -41,7 +45,7 @@ Environment=JVM_ARGS=-Dlog4j2.formatMsgNoLookups=true\s{{ fuseki_java_opts }}
 ExecStart={{ fuseki_home }}/fuseki-server
 # Run as user "fuseki"
 User={{ fuseki_user }}
-Restart=on-abort
+Restart=failure
 # Java processes exit with status 143 when terminated by SIGTERM, this
 # should be considered a successful shutdown
 SuccessExitStatus=143

@@ -28,6 +28,10 @@
 <#service> rdf:type fuseki:Service ;
     fuseki:name "{{ item.name }}" ;
     fuseki:serviceQuery "query" ;
+{% if item.shacl | default(false) | bool %}
+    fuseki:endpoint [ fuseki:operation fuseki:shacl ;
+        fuseki:name "shacl" ];
+{% endif %}
 {% if item.lucene | default(false) | bool == false %}
     fuseki:dataset <#dataset> ;
 {% else %}

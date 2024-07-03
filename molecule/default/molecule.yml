@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: instance
-    image: docker.io/pycontribs/centos:7
+    image: docker.io/redhat/ubi9-init:latest
     version: latest
     pre_build_image: true
     port_bindings: {3030:3030}

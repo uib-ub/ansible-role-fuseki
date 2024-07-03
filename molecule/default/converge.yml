@@ -1,9 +1,11 @@
 ---
 - name: Converge
   hosts: all
+  become_method: su
+
   tasks:
-    - name: "update yum"
-      yum:
+    - name: "update dnf"
+      dnf:
         name: "*"
         state: "latest"
       become: true

@@ -94,7 +94,7 @@
       owner: "{{ fuseki_user }}"
       group: "{{ fuseki_user }}"
       mode: 0770
-      recurse: true
+      recurse: false
       state: "directory"
     become: true
 

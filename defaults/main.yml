@@ -8,7 +8,7 @@ fuseki_create_user: True
 fuseki_allow_httpd: false
 fuseki_user: "fuseki"
 
-fuseki_version: "4.8.0"
+fuseki_version: "5.0.0"
 fuseki_mirror: "https://archive.apache.org/dist"
 
 fuseki_install_dir: "/opt"

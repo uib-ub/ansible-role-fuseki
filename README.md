@@ -6,8 +6,14 @@ An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/docum
 
 ## Requirements
 
-A Java runtime has to be installed on the target host.
-When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_network_connect` if fuseki is behind an Apache webserver.
+A Java runtime has to be installed on the target host. Apache Jena and Apache Jena Fuseki aims to support the last two LTS releases of java and will post a new major release when a LTS is no longer in use.
+
+* Apache Jena  4.X branch supports java 11 to 17
+* Apache Jena 5.X branch supports java 17 to 21
+
+The default version if none is set is now 5.0, so a java >= 17 is currently required, if the version isn't lowered.
+
+When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_network_relay` if fuseki is behind an Apache webserver. 
 
 ## Example Playbook
 

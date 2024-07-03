@@ -12,7 +12,7 @@
 
     - name: "install java version"
       package:
-        name:  ["which", "java-11-openjdk", "java-11-openjdk-headless"]
+        name:  ["which", "java-21-openjdk", "java-21-openjdk-headless"]
       become: true
 
     - name: "Include fuseki"

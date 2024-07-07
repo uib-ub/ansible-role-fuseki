@@ -3,6 +3,9 @@ fuseki_components:
   - "apache-jena"
   - "apache-jena-fuseki"
 
+# Update checksums when updating fuseki_version https://jena.apache.org/download/
+fuseki_checksum: "c7b9fa452cdec19c50ee08ee191012b26c7b51f1ee5c5143db3047e0545c007599fbc08481fa61df5aef766a796e43262c209fc42578f2e532c0ab0c19dcbc51"
+jena_checksum: "5bbb9a3b613eadcd75beb11671b2d797794b578eea2f0e68b57ba7fd402ca789c7ea3c71206baace8c662581e8e615a22d40d3b5f9461823a8603dd6ee40d912"
 fuseki_workspace: "/home/{{ ansible_user }}"
 fuseki_create_user: True
 fuseki_allow_httpd: false

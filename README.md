@@ -19,8 +19,13 @@ When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_
 
 ``` yaml
 - role: geerlingguy.java
-- role: fuseki
-  fuseki_configurations:
+- import_role:
+    name: fuseki
+  vars:
+    # fuseki_version: 5.0.0
+    # checksum: https://jena.apache.org/download/ matching tar.gz. Update checksums if version is different from default
+    # fuseki_checksum
+    fuseki_configurations:
     - name: "test-db"
       read_write: True
       union_default_graph: False

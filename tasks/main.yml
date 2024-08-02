@@ -27,7 +27,32 @@
   with_items: "{{ fuseki_components }}"
   register: fuseki_install_status
 
-- name: Get gpg keys
+- name: "Symlink status for Apache Jena Fuseki"
+  stat:
+    path: "/opt/fuseki"
+  become: true
+  register: "fuseki_symlink_status"
+
+- name: "Symlink status for Apache Jena"
+  stat:
+    path: "/opt/jena"
+  become: true
+  register: "fuseki_jena_symlink_status"
+
+- name: "set facts for symlink targets"
+  set_fact:
+    fuseki_symlink_target: "/opt/apache-jena-fuseki-{{ fuseki_version }}"
+    fuseki_jena_symlink_target: "/opt/apache-jena-{{ fuseki_version }}"
+    msg: "{{ fuseki_symlink_status }}"
+
+- name: "stop fuseki systemd if fuseki symlink exists and if the active symlink target is different than the configured symlinked"
+  systemd:
+    name: "fuseki"
+    state: "stopped"
+  become: true
+  when: "(fuseki_symlink_status.stat.exists | bool or fuseki_jena_symlink_status.stat.exists | bool) and (fuseki_symlink_status.stat.lnk_target != fuseki_symlink_target or fuseki_jena_symlink_status.stat.lnk_target != fuseki_jena_symlink_target)"
+
+- name: "Get gpg keys"
   get_url:
     url: "https://downloads.apache.org/jena/KEYS"
     dest: "{{ fuseki_workspace }}/KEYS"
@@ -35,12 +60,12 @@
   become: true
   register: "gpg_keys"
 
-- name: Import gpg keys
+- name: "Import gpg keys"
   command: "gpg --import {{ fuseki_workspace }}/KEYS"
   become: true
   when: "gpg_keys.changed | bool"
 
-- name: Download Fuseki
+- name: "Download Fuseki"
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
@@ -51,7 +76,7 @@
   register: fuseki_download_status
   become: true
 
-- name: Download Jena.
+- name: "Download Jena"
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
@@ -63,7 +88,7 @@
   become: true
 
 
-- name: Download Fuseki and Jena asc files for verification
+- name: "Download Fuseki and Jena asc files for verification"
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz.asc"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
@@ -80,14 +105,14 @@
 
 - name: "add to trust store"
   command: "gpg --import-ownertrust {{ fuseki_workspace }}/trust"
-  when: gpg_keys.changed 
+  when: "gpg_keys.changed | bool" 
 
 
-- name: Verify Fuseki and Jena
+- name: "Verify Fuseki and Jena"
   command: "gpg  --verify {{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc {{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
   with_items: "{{ fuseki_install_status.results }}"
-  register: fuseki_gpg_verification
-  when: item.stat.isdir is not defined
+  register: "fuseki_gpg_verification"
+  when: "item.stat.isdir is not defined"
   become: true
 
 - name: "copy release key to trust"
@@ -118,7 +143,6 @@
   with_items: "{{ jena_download_status.results }}"
   when: item.changed == true
   become: true
-
 
 - name: Create symlink to unnumbered apache jena and fuseki
   file:
@@ -219,11 +243,6 @@
       mode: "+x"
     become: true
 
-  #- name: debug running fuseki-server
-  #  shell: "({{ fuseki_home }}/fuseki-server >/dev/null 2>&1 &)"
-  #  become_user: fuseki
-  #  become: true
-
   - name: "Ensure fuseki is enabled"
     systemd:
       name: "fuseki"
@@ -239,7 +258,7 @@
 
   - name: "debug"
     debug:
-      msg: "{{ fuseki_debug_status }}"
+      msg: "{{ fuseki_debug_status }}"
     changed_when: false
 
   - name: "Ensure Fuseki is started"

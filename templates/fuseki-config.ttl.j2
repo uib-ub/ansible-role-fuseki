@@ -5,7 +5,7 @@
 @prefix tdb2:    <http://jena.apache.org/2016/tdb#> .
 @prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-@prefix spatial: <http://jena.apache.org/spatial#> .
+PREFIX geosparql: <http://jena.apache.org/geosparql#>
 @prefix se: <http://jena.apache.org/service-enhancer#> .
 @prefix :        <#> .
 
@@ -21,6 +21,17 @@
   {% set dataset_tdb_prefix = 'tdb' %}
 {% endif %}
 
+{% set dataset_predicate = 'fuseki:dataset' %}
+{% if item.service_enhancer | default (false) | bool %}
+{% set dataset_uri = '<#service-enhancer-dataset>' %}
+{% else if item.lucene | default (false) | bool %}
+{% set dataset_uri = '<#text_dataset>' %}
+{% if item.geosparql | default (false) | bool %}
+{% set dataset_uri = '<#geo_dataset>' %}
+{% else %}
+{% set dataset_uri = '<#dataset>' %}
+{% endif %}
+
 {{ item.prefix | default('') }}
 
 {{  item.extra_conf | default('') }}
@@ -32,12 +43,7 @@
     fuseki:endpoint [ fuseki:operation fuseki:shacl ;
         fuseki:name "shacl" ];
 {% endif %}
-{% if item.lucene | default(false) | bool == false %}
-    fuseki:dataset <#dataset> ;
-{% else %}
-    fuseki:dataset <#text_dataset> ;
-{% endif %}
-
+    {{ dataset_predicate }} {{ dataset_uri }} ;
     fuseki:serviceReadGraphStore "data" ;
     .
 
@@ -52,9 +58,29 @@
     .
 {% endif %}
 
-{% if item.lucene | default(false) | bool %}
+
+{% if item.service_enhancer | default(false) | bool %}
+
+ <#service-enhancer-dataset> rdf:type se:DatasetServiceEnhancer ;
+  {% if item.lucene | default (false) | bool %}
+    {% set dataset_uri = '<#text_dataset>' %}
+  {% if item.geosparql | default (false) | bool %}
+    {% set dataset_uri = '<#geo_dataset>' %}
+  {% else %}
+    {% set dataset_uri = '<#dataset>' %}
+  {% endif %}
+  ja:baseDataset  {{ dataset_uri }} .
+  
+{% endif %}
+
+{% if item.geosparql | default (false) | bool %}
+{% set dataset_uri = '<#geo_dataset>' %}
+{% else %}
+{% set dataset_uri = '<#dataset>' %}
+{% endif %}
+
 <#text_dataset> rdf:type text:TextDataset ;
-   text:dataset <#dataset> ;
+   text:dataset {{ dataset_uri }} ;
    text:index <#text_index> ;
 .
 <#text_index> a text:TextIndexLucene ;
@@ -69,34 +95,19 @@
 .
 {% endif %}
 
-{% if item.spatial | default(false) | bool %}
-<#spatial_dataset> rdf:type spatial:SpatialDataset ;
-   spatial:dataset   <#dataset> ;
-   spatial:index <#spatial_index> ;
-.
+{% if item.geosparql | default (false) | bool %}
+
+<#geo_dataset> a geosparql:geosparqlDataset ; ;
+    geosparql:dataset
+    geosparql:spatialIndexFile "{{ fuseki_base }}/databases/{{ item.name }}/DB/spatial.index";
+    geosparql:dataset <#dataset> .
+
 
 {% endif %}
 
-{# both spatial and text #}
-{% if item.spatialtext | default(false) | bool %}
-{# todo @implement from https://git.app.uib.no/snippets/118 #}
-.
-{% endif %}
-
-{% if item.spatial | default (false) or item.spatialtext | default(false) %}
-
-<#spatial_index> a spatial:SpatialIndexLucene ;
-  spatial:directory <{{ fuseki_base }}/databases/{{ item.name }}/Lucene-geo> ;
-  spatial:definition <#spatial_definition>
-.
-
-<#spatial_definition> a spatial:EntityDefinition ;   spatial:entityField      "uri" ;   spatial:geoField     "geo"   .
-
-{% endif %}
-
-<#dataset> rdf:type {{ dataset_rdf_type }} ; {% if item.service_enhancer | default (false) | bool %} rdf:type se:DatasetServiceEnhancer ; {% endif %}
+<#dataset> rdf:type {{ dataset_rdf_type }} ;
    {{ dataset_location_predicate }} "{{ fuseki_base }}/databases/{{ item.name }}" ;
 {% if item.union_default_graph|default(true) %}
     {{ dataset_tdb_prefix }}:unionDefaultGraph true ;
 {% endif %}
-    .
+.

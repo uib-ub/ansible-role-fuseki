@@ -33,6 +33,7 @@
   become: true
   register: "fuseki_symlink_status"
 
+
 - name: "Symlink status for Apache Jena"
   stat:
     path: "/opt/jena"
@@ -52,7 +53,7 @@
   become: true
   when: "(fuseki_symlink_status.stat.exists | bool or fuseki_jena_symlink_status.stat.exists | bool) and (fuseki_symlink_status.stat.lnk_target != fuseki_symlink_target or fuseki_jena_symlink_status.stat.lnk_target != fuseki_jena_symlink_target)"
 
-- name: "Get gpg keys"
+- name: Get gpg keys
   get_url:
     url: "https://downloads.apache.org/jena/KEYS"
     dest: "{{ fuseki_workspace }}/KEYS"
@@ -60,12 +61,12 @@
   become: true
   register: "gpg_keys"
 
-- name: "Import gpg keys"
+- name: Import gpg keys
   command: "gpg --import {{ fuseki_workspace }}/KEYS"
   become: true
   when: "gpg_keys.changed | bool"
 
-- name: "Download Fuseki"
+- name: Download Fuseki
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
@@ -76,7 +77,7 @@
   register: fuseki_download_status
   become: true
 
-- name: "Download Jena"
+- name: Download Jena.
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
@@ -88,7 +89,7 @@
   become: true
 
 
-- name: "Download Fuseki and Jena asc files for verification"
+- name: Download Fuseki and Jena asc files for verification
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz.asc"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
@@ -108,11 +109,11 @@
   when: "gpg_keys.changed | bool" 
 
 
-- name: "Verify Fuseki and Jena"
+- name: Verify Fuseki and Jena
   command: "gpg  --verify {{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc {{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
   with_items: "{{ fuseki_install_status.results }}"
-  register: "fuseki_gpg_verification"
-  when: "item.stat.isdir is not defined"
+  register: fuseki_gpg_verification
+  when: item.stat.isdir is not defined
   become: true
 
 - name: "copy release key to trust"
@@ -249,6 +250,9 @@
       state: started
       enabled: true
     become: true
+
+  - name: "add simple user password configuration if configured"
+    import_tasks: "shiro.yml"
 
   - name: debug
     shell: systemctl status fuseki

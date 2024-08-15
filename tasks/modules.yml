@@ -28,6 +28,13 @@
   become_user: fuseki
   when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
 
+- name: "get guava dependency for jena service enhancer"
+  get_url:
+    url: "https://repo1.maven.org/maven2/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar"
+    dest: "{{ fuseki_home }}/run/extra"
+  become: true
+  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"  
+
 - name: "Download modules to $JENA_HOME/run/extra"
   get_url:
     url: "{{ item }}"

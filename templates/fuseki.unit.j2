@@ -39,6 +39,8 @@ StartLimitIntervalSec=60
 Environment=FUSEKI_HOME={{ fuseki_home }}
 Environment=FUSEKI_BASE={{ fuseki_base }}
 Environment=FUSEKI_EXTRA={{ fuseki_home }}/lib/*
+# set a working directory for fuseki for paths to work as expected
+WorkingDirectory={{ fuseki_home }}
 # Edit the line below to adjust the amount of memory allocated to Fuseki
 Environment=JVM_ARGS=-Dlog4j2.formatMsgNoLookups=true\s{{ fuseki_java_opts }}
 # Edit to match your installation

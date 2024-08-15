@@ -24,9 +24,9 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 {% set dataset_predicate = 'fuseki:dataset' %}
 {% if item.service_enhancer | default (false) | bool %}
   {% set dataset_uri = '<#service-enhancer-dataset>' %}
-{% else if item.lucene | default (false) | bool %}
+{% elif item.lucene | default (false) | bool %}
   {% set dataset_uri = '<#text_dataset>' %}
-{% else if item.geosparql | default (false) | bool %}
+{% elif item.geosparql | default (false) | bool %}
   {% set dataset_uri = '<#geo_dataset>' %}
 {% else %}
   {% set dataset_uri = '<#dataset>' %}
@@ -64,7 +64,7 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
  <#service-enhancer-dataset> rdf:type se:DatasetServiceEnhancer ;
   {% if item.lucene | default (false) | bool %}
     {% set dataset_uri = '<#text_dataset>' %}
-  {% else if item.geosparql | default (false) | bool %}
+  {% elif item.geosparql | default (false) | bool %}
     {% set dataset_uri = '<#geo_dataset>' %}
   {% else %}
     {% set dataset_uri = '<#dataset>' %}

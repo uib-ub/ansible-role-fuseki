@@ -10,26 +10,26 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 @prefix :        <#> .
 
 {% if item.dataset_type is undefined or item.dataset_type == 'tdb2' %}
- {% set dataset_rdf_type = 'tdb2:DatasetTDB2' %}
- {% set dataset_location_predicate = 'tdb2:location' %}
- {% set dataset_tdb_prefix = 'tdb2' %}
+  {% set dataset_rdf_type = 'tdb2:DatasetTDB2' %}
+  {% set dataset_location_predicate = 'tdb2:location' %}
+  {% set dataset_tdb_prefix = 'tdb2' %}
 {% endif %}
 
 {% if item.dataset_type is defined and item.dataset_type == 'tdb' %}
- {% set dataset_rdf_type = 'tdb:DatasetTDB' %}
- {% set dataset_location_predicate = 'tdb:location' %}
+  {% set dataset_rdf_type = 'tdb:DatasetTDB' %}
+  {% set dataset_location_predicate = 'tdb:location' %}
   {% set dataset_tdb_prefix = 'tdb' %}
 {% endif %}
 
 {% set dataset_predicate = 'fuseki:dataset' %}
 {% if item.service_enhancer | default (false) | bool %}
-{% set dataset_uri = '<#service-enhancer-dataset>' %}
+  {% set dataset_uri = '<#service-enhancer-dataset>' %}
 {% else if item.lucene | default (false) | bool %}
-{% set dataset_uri = '<#text_dataset>' %}
-{% if item.geosparql | default (false) | bool %}
-{% set dataset_uri = '<#geo_dataset>' %}
+  {% set dataset_uri = '<#text_dataset>' %}
+{% else if item.geosparql | default (false) | bool %}
+  {% set dataset_uri = '<#geo_dataset>' %}
 {% else %}
-{% set dataset_uri = '<#dataset>' %}
+  {% set dataset_uri = '<#dataset>' %}
 {% endif %}
 
 {{ item.prefix | default('') }}
@@ -64,7 +64,7 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
  <#service-enhancer-dataset> rdf:type se:DatasetServiceEnhancer ;
   {% if item.lucene | default (false) | bool %}
     {% set dataset_uri = '<#text_dataset>' %}
-  {% if item.geosparql | default (false) | bool %}
+  {% else if item.geosparql | default (false) | bool %}
     {% set dataset_uri = '<#geo_dataset>' %}
   {% else %}
     {% set dataset_uri = '<#dataset>' %}
@@ -74,9 +74,9 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 {% endif %}
 
 {% if item.geosparql | default (false) | bool %}
-{% set dataset_uri = '<#geo_dataset>' %}
+  {% set dataset_uri = '<#geo_dataset>' %}
 {% else %}
-{% set dataset_uri = '<#dataset>' %}
+  {% set dataset_uri = '<#dataset>' %}
 {% endif %}
 
 <#text_dataset> rdf:type text:TextDataset ;

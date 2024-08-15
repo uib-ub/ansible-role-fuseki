@@ -79,6 +79,7 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
   {% set dataset_uri = '<#dataset>' %}
 {% endif %}
 
+{% if item.lucene | default (false) | bool %}
 <#text_dataset> rdf:type text:TextDataset ;
    text:dataset {{ dataset_uri }} ;
    text:index <#text_index> ;

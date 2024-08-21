@@ -104,6 +104,14 @@
     shell: "curl -XGET localhost:3030/test-db_all/query?query=SELECT%20%2A%20%7B%20SERVICE%20%3Ccache%3A%3E%20%7B%20SELECT%20DISTINCT%20%3Fs%20%7B%20%3Fs%20a%20%3Fo%20%7D%20ORDER%20BY%20%3Fs%20LIMIT%2010%20%7D%7D%0A"
     register: se_query_result
 
+  - name: "query status with no password"
+    shell: "curl -XGET localhost:3030/$/status"
+    register: status_query_nopw_result
+
+  - name: "query status with user password"
+    shell: "curl -XGET localhost:3030/$/status"
+    register: status_query_result
+
   - name: "debug lucene query result"
     debug:
       msg: "{{ lucene_query_result }}"
@@ -115,6 +123,10 @@
   - name: "debug service enhancer result"
     debug:
       msg: "{{ se_query_result }}"
+ 
+  - name: "debug basic auth"
+    debug:
+      msg: "{{ status_query_nopw_result }} {{ status_query_result }}"
 
   - assert:
       that: true

@@ -10,7 +10,7 @@ fuseki_workspace: "/home/{{ ansible_user }}"
 fuseki_create_user: True
 fuseki_allow_httpd: false
 fuseki_user: "fuseki"
-
+fuseki_debug: false
 fuseki_version: "5.1.0"
 fuseki_mirror: "https://archive.apache.org/dist"
 

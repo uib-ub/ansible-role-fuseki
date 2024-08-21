@@ -2,7 +2,6 @@
 - name: Converge
   hosts: all
   become_method: su
-
   tasks:
     - name: "update dnf"
       dnf:
@@ -10,9 +9,9 @@
         state: "latest"
       become: true
 
-    - name: "install java version"
+    - name: "install required dependencies"
       package:
-        name:  ["which", "java-21-openjdk", "java-21-openjdk-headless"]
+        name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless"]
       become: true
 
     - name: "Include fuseki"
@@ -20,9 +19,33 @@
         name: "fuseki"
       vars:
         fuseki_workspace: "/tmp/"
+        service_enhancer_url: "https://github.com/OyvindLGjesdal/jena/releases/download/service-enhancer-shaded/jena-serviceenhancer-5.2.0-SNAPSHOT.jar"
+        #
+        fuseki_modules:
+        # sis-embedded-data packaged with shading enabled
+        - "https://github.com/OyvindLGjesdal/jena/releases/download/service-enhancer-shaded/jena-sis-nonfree-1.0.jar"
+
+                #
+                # - "https://repo1.maven.org/maven2/org/apache/sis/non-free/sis-embedded-data/1.4/sis-embedded-data-1.4.jar"
         fuseki_configurations:
-        - name: "test-db"
-          read_write: True
-          union_default_graph: False
+        - name: "test-db_all"
+          read_write: true
+          union_default_graph: true
+          lucene: true
+          geosparql: true
 
+          service_enhancer: true
+          luceneStoreValues: true
+          prefix: |
+            @prefix ex: <http://example.org/Schema#> .
+          entity_map: |
+            text:defaultField     "label" ;
+            text:entityField      "uri" ;
+            text:uidField         "uid" ;
+            text:langField        "lang" ;
+            text:graphField       "graph" ;
+            text:map (
+              [ text:field "label" ;
 
+               text:predicate ex:name ] )
+     

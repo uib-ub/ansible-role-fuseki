@@ -39,22 +39,6 @@
   become: true
   when: "fuseki_configurations |  selectattr('geosparql', 'defined') | selectattr('geosparql', 'equalto', true) | list | length > 0"
 
-- name: "Download apache sis binary"
-  get_url:
-    url: "https://dlcdn.apache.org/sis/1.4/apache-sis-1.4-bin.zip"
-    dest: "/opt/apache-sis-1.4.bin.zip"
-  become: true
-  when: "fuseki_configurations |  selectattr('geosparql', 'defined') | selectattr('geosparql', 'equalto', true) | list | length > 0"
-
-- name: "unzip apache sis binary"
-  unarchive:
-    src: /opt/apache-sis-1.4.bin.zip
-    dest: /opt/
-    remote_src: yes
-    creates: /opt/apache-sis-1.4
-  become: true
-  when: "fuseki_configurations |  selectattr('geosparql', 'defined') | selectattr('geosparql', 'equalto', true) | list | length > 0"
-
 - name: "Download modules to $JENA_BASE/extra"
   get_url:
     url: "{{ item }}"

@@ -1,6 +1,6 @@
 - name: "template shiro.ini"
   template:
     src: "shiro.ini.j2"
-    dest: "{{ fuseki_base }}/shiro.ini"
+    dest: "{{ fuseki_home }}/shiro.ini"
     backup: true
   become: true

@@ -105,7 +105,7 @@
     register: se_query_result
 
   - name: "query status with no password"
-    shell: "curl -XGET localhost:3030/$/status"
+    shell: "curl -v -XGET localhost:3030/$/status"
     register: status_query_nopw_result
 
   - name: "query status with user password"

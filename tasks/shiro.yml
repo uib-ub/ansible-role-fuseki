@@ -9,6 +9,6 @@
   shell: "cat /var/fuseki/shiro.ini"
   register: "shiro_cat_output"
 
-- name: "debug shiro.ini"
-  debug:
-    msg: "{{ shiro_cat_output }}"
+  #- name: "debug shiro.ini"
+  #debug:
+  #  msg: "{{ shiro_cat_output }}"

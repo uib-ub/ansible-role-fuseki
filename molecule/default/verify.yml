@@ -1,9 +1,120 @@
 ---
 # This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
+  become_method: su
   tasks:
-  - name: Example assertion
-    assert:
+  - name: "set facts"
+    set_fact:
+      fuseki_home: "/opt/fuseki"
+      fuseki_base: "/var/fuseki"
+      fuseki_debug: false
+
+  - name: "see ps aux for fuseki"
+    shell: "ps aux | grep fuseki"
+    register: "aux_result"
+    when: "fuseki_debug | bool"
+
+  - name: "debug ps aux result"
+    debug:
+      msg: "{{ aux_result }}"
+    when: "fuseki_debug | bool"
+
+  - name: "download geosparql test data"
+    get_url:
+      url: "https://raw.githubusercontent.com/apache/jena/main/jena-fuseki2/jena-fuseki-geosparql/geosparql_test.rdf"
+      dest: "/tmp/geosparql_test.rdf"
+
+  - name: "status fuseki -n500 -l"
+    shell: "systemctl status fuseki -n500 -l"
+    register: "fuseki_service_result"
+    when: "fuseki_debug | bool"
+
+  - name: "debug status fuseki"
+    debug:
+      msg: "{{ fuseki_service_result }}"
+    when: "fuseki_debug | bool"
+
+  - name: "write data to endpoint"
+    shell: "curl --fail-with-body -H 'Content-type: application/rdf+xml' -H 'Transfer-Encoding: chunked' -XPUT -T '/tmp/geosparql_test.rdf' localhost:3030/test-db_all_write/data?graph=http%3A%2F%2Fexample.org"
+    register: "write_geosparql_result"
+
+  - name: "see curl PUT results for geosparql_test.rdf"
+    debug:
+      msg: "{{ write_geosparql_result }}"
+ 
+  - name: "cat test_db_all.ttl assembler"
+    shell: cat /var/fuseki/configuration/test-db_all.ttl
+    register: assembler_result
+    become: true
+    when: "fuseki_debug | bool"
+
+  - name: "check modules"
+    shell: "ls -alh /var/fuseki/extra"
+    register: "modules_dir_output"
+    when: "fuseki_debug | bool"
+
+  - name: "debug modules dir"
+    debug:
+      msg: "{{ modules_dir_output }}"
+    when: "fuseki_debug | bool"
+
+  - name: "view active assembler"
+    debug:
+      msg: "{{ assembler_result }}"
+    when: "fuseki_debug | bool"
+
+  - name: "stop fuseki"
+    systemd:
+      name: "fuseki"
+      state: "stopped"
+    become: true
+
+  - name: "index lucene"
+    shell: "SIS_DATA=/var/fuseki/databases/test-db_all/sis && mkdir /var/fuseki/databases/test-db_all/DB && java -cp {{ fuseki_home }}/fuseki-server.jar:{{fuseki_base }}/extra/* jena.textindexer --desc={{ fuseki_base }}/configuration/test-db_all.ttl"
+    register: lucene_result
+    become_user: fuseki
+    become: true
+
+  - name: "debug lucene"
+    debug:
+      msg: "{{ lucene_result }}"
+
+  - name: "start fuseki"
+    systemd:
+      name: "fuseki"
+      state: started
+    become: true
+
+  - name: "wait for fuseki to be back up"
+    wait_for:
+      port: 3030
+
+  - name: "query for placeA with text index"
+    shell: "curl -XGET localhost:3030/test-db_all/query?query=PREFIX%20text%3A%20%3Chttp%3A%2F%2Fjena.apache.org%2Ftext%23%3E%0ASELECT%20%2A%20WHERE%20%7B%20%3Fs%20a%20%3Fclass%20%3B%20text%3Aquery%28%27placea%27%29%20.%20%7D%20LIMIT%20100"
+    register: lucene_query_result
+
+    #encode-for-uri('PREFIX spatial: <http://jena.apache.org/spatial#>
+    # SELECT ?subj WHERE {?subj spatial:nearby(49.951913 -7.036230 50) } ORDER by ?subj')
+  - name: "query for placeA with geo index"
+    shell: "curl -XGET localhost:3030/test-db_all/query?query=PREFIX%20spatial%3A%20%3Chttp%3A%2F%2Fjena.apache.org%2Fspatial%23%3E%0ASELECT%20%3Fsubj%20WHERE%20%7B%3Fsubj%20spatial%3Anearby%2849.951913%20-7.036230%2050%29%20%7D%20ORDER%20by%20%3Fsub"
+    register: geosparql_query_result
+
+  - name: "query using cache"
+    shell: "curl -XGET localhost:3030/test-db_all/query?query=SELECT%20%2A%20%7B%20SERVICE%20%3Ccache%3A%3E%20%7B%20SELECT%20DISTINCT%20%3Fs%20%7B%20%3Fs%20a%20%3Fo%20%7D%20ORDER%20BY%20%3Fs%20LIMIT%2010%20%7D%7D%0A"
+    register: se_query_result
+
+  - name: "debug lucene query result"
+    debug:
+      msg: "{{ lucene_query_result }}"
+
+  - name: "debug geo"
+    debug:
+      msg: "{{ geosparql_query_result }}"
+
+  - name: "debug service enhancer result"
+    debug:
+      msg: "{{ se_query_result }}"
+
+  - assert:
       that: true

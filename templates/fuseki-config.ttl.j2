@@ -5,7 +5,7 @@
 @prefix tdb2:    <http://jena.apache.org/2016/tdb#> .
 @prefix text:    <http://jena.apache.org/text#> .
 @prefix ja:      <http://jena.hpl.hp.com/2005/11/Assembler#> .
-PREFIX geosparql: <http://jena.apache.org/geosparql#>
+@prefix geosparql: <http://jena.apache.org/geosparql#>
 @prefix se: <http://jena.apache.org/service-enhancer#> .
 @prefix :        <#> .
 
@@ -98,8 +98,7 @@ PREFIX geosparql: <http://jena.apache.org/geosparql#>
 
 {% if item.geosparql | default (false) | bool %}
 
-<#geo_dataset> a geosparql:geosparqlDataset ; ;
-    geosparql:dataset
+<#geo_dataset> a geosparql:GeosparqlDataset ; 
     geosparql:spatialIndexFile "{{ fuseki_base }}/databases/{{ item.name }}/DB/spatial.index";
     geosparql:dataset <#dataset> .
 

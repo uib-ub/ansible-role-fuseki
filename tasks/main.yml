@@ -244,6 +244,21 @@
       mode: "+x"
     become: true
 
+  - name: debug
+    shell: journalctl -u fuseki --since today
+    register: fuseki_debug_status
+    ignore_errors: true
+    changed_when: false
+    become: true
+    when: "fuseki_debug | bool"
+
+  - name: "debug"
+    debug:
+      msg: "{{ fuseki_debug_status }}"
+    changed_when: false
+    when: "fuseki_debug | bool"
+
+
   - name: "Ensure fuseki is enabled"
     systemd:
       name: "fuseki"
@@ -253,17 +268,6 @@
 
     # - name: "add simple user password configuration if configured"
     # import_tasks: "shiro.yml"
-
-  - name: debug
-    shell: systemctl status fuseki
-    register: fuseki_debug_status
-    ignore_errors: true
-    changed_when: false
-
-  - name: "debug"
-    debug:
-      msg: "{{ fuseki_debug_status }}"
-    changed_when: false
 
   - name: "Ensure Fuseki is started"
     systemd:

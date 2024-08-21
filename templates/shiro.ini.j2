@@ -25,7 +25,7 @@ localhostFilter=org.apache.jena.fuseki.authz.LocalhostFilter
 {% endfor %}
 [roles]
 test= /$/status
-{{ fuseki_shiro_roles_section }}
+{{ fuseki_shiro_roles_section | default('') }}
 [urls]
 ## Control functions open to anyone
 # /$/status  = authcBasic,user[test]
@@ -45,7 +45,7 @@ test= /$/status
 ## or to allow any access.
 ##/$/** = anon
 
-{{ fuseki_shiro_url_rules }}
+{{ fuseki_shiro_url_rules | default('') }}
 
 # Everything else
 /**=anon

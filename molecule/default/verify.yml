@@ -8,7 +8,7 @@
     set_fact:
       fuseki_home: "/opt/fuseki"
       fuseki_base: "/var/fuseki"
-      fuseki_debug: false
+      fuseki_debug: true
 
   - name: "see ps aux for fuseki"
     shell: "ps aux | grep fuseki"

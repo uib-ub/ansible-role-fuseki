@@ -33,12 +33,12 @@ test= /$/status
 /$/ping    = anon
 /$/metrics = anon
 
-# custom rules added by ansible
-# rules above takes precedence
-{{ fuseki_shiro_url_rules | default('') }}
-
 ## and the rest are restricted to localhost.
 /$/** = localhostFilter
+
+# custom rules added by ansible
+# can override all rules above if defineed
+{{ fuseki_shiro_url_rules | default('') }}
 
 ## If you want simple, basic authentication user/password
 ## on the operations,

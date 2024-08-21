@@ -124,9 +124,13 @@
     debug:
       msg: "{{ se_query_result }}"
  
+  - name: "debug basic auth nopw"
+    debug:
+      msg: "{{ status_query_nopw_result }}"
+
   - name: "debug basic auth"
     debug:
-      msg: "{{ status_query_nopw_result }} {{ status_query_result }}"
+      msg: "{{ status_query_result }}"
 
   - assert:
       that: true

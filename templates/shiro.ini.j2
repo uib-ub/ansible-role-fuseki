@@ -33,6 +33,10 @@ test= /$/status
 /$/ping    = anon
 /$/metrics = anon
 
+# custom rules added by ansible
+# rules above takes precedence
+{{ fuseki_shiro_url_rules | default('') }}
+
 ## and the rest are restricted to localhost.
 /$/** = localhostFilter
 
@@ -44,8 +48,6 @@ test= /$/status
 
 ## or to allow any access.
 ##/$/** = anon
-
-{{ fuseki_shiro_url_rules | default('') }}
 
 # Everything else
 /**=anon

@@ -109,7 +109,7 @@
     register: status_query_nopw_result
 
   - name: "query status with user password"
-    shell: "curl -XGET localhost:3030/$/status"
+    shell: "curl -XGET  -u admin:pw localhost:3030/$/status"
     register: status_query_result
 
   - name: "debug lucene query result"

@@ -39,7 +39,9 @@ StartLimitIntervalSec=60
 Environment=FUSEKI_HOME={{ fuseki_home }}
 Environment=FUSEKI_BASE={{ fuseki_base }}
 Environment=FUSEKI_EXTRA={{ fuseki_home }}/lib/*
-Environment=SIS_DATA=/var/fuseki/databases/test-db_all/sis
+{% if fuseki_sis_data is defined %}
+Environment=SIS_DATA={{ fuseki_sis_data }}
+{% endif %}
 # set a working directory for fuseki for paths to work as expected
 WorkingDirectory={{ fuseki_home }}
 # Edit the line below to adjust the amount of memory allocated to Fuseki

@@ -266,8 +266,9 @@
       enabled: true
     become: true
 
-    # - name: "add simple user password configuration if configured"
-    # import_tasks: "shiro.yml"
+  - name: "add user password configuration if configured"
+    import_tasks: "shiro.yml"
+    when: "fuseki_shiro_users is defined and fuseki_shiro_users | length > 0"
 
   - name: "Ensure Fuseki is started"
     systemd:

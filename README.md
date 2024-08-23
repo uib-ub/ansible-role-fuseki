@@ -123,7 +123,7 @@ Full example with all features
 Each fuseki_configuration creates an assembler file in `$FUSEKI_BASE/configuration/name.ttl` Invalid turtle will cause the service to fail starting.
 
 For more on the configuration `https://jena.apache.org/documentation/assembler/`. Configuration errors often cause warnings or errors that can be seen 
-with journalctl -u fuseki --since today` or `systemctl status fuseki -n100 -l`.
+with `journalctl -u fuseki --since today` or `systemctl status fuseki -n100 -l`.
 
 Our CI configuration runs molecule to test that the main features and additions work (graph store protocol publish,standard get queries, geosparql, jena-text, service-enhancer and shiro user configuration authentication for request). @todo Shacl test.
 

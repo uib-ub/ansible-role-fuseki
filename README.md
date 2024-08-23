@@ -63,7 +63,7 @@ Full example with all features
         # removing `apache_jena` from fuseki_components, fuseki can also be omited, if only Apache Jena is required.
 #       fuseki_components:
         - "apache-jena-fuseki"
-        # using older version for demonstration
+        # using older version for demonstration of setting checksums for non-default versions, note that modules won't work since they were built with a newer version (5.1.0)
         fuseki_version: "5.0.0"
         #checksums from https://archive.apache.org/dist/jena/binaries/apache-jena-fuseki-5.0.0.tar.gz.sha512 and  https://archive.apache.org/dist/jena/binaries/apache-jena-5.0.0.tar.gz.sha512
         fuseki_checksum: ""c7b9fa452cdec19c50ee08ee191012b26c7b51f1ee5c5143db3047e0545c007599fbc08481fa61df5aef766a796e43262c209fc42578f2e532c0ab0c19dcbc5
@@ -105,7 +105,7 @@ Full example with all features
               [ text:field "label" ;
                text:predicate ex:name ] )
           extra_conf: |
-            # generic block to insert extra assembler configuration not covered by booleans
+            # generic block to insert extra assembler configuration not covered by booleans for a single service
           # block for insert shiro url rules https://shiro.apache.org/web.html#urls
           fuseki_shiro_url_rules: |
             /$/backup  = authcBasic,user[admin]
@@ -125,7 +125,7 @@ Each fuseki_configuration creates an assembler file in `$FUSEKI_BASE/configurati
 For more on the configuration `https://jena.apache.org/documentation/assembler/`. Configuration errors often cause warnings or errors that can be seen 
 with journalctl -u fuseki --since today` or `systemctl status fuseki -n100 -l`.
 
-CI jobs currently runs molecule to test that main features and additions work (graph store protocol publish,standard get select get queries, , geosparql, jena-text, service-enhancer, shiro user configuration). @todo Shacl test.
+Our CI configuration runs molecule to test that the main features and additions work (graph store protocol publish,standard get queries, geosparql, jena-text, service-enhancer and shiro user configuration authentication for request). @todo Shacl test.
 
 ## License
 

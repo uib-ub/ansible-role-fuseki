@@ -11,7 +11,7 @@ A Java runtime has to be installed on the target host. Apache Jena and Apache Je
 * Apache Jena  4.X branch supports java 11 to 17
 * Apache Jena 5.X branch supports java 17 to 21
 
-The default version if none is set is now 5.0, so a java >= 17 is currently required, if the version isn't lowered.
+The default version if none is set is now 5.1, so a java >= 17 is currently required, if the version isn't lowered.
 
 When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_network_relay` or `httpd_can_network_connect`, based on the configuration, if fuseki is behind an Apache webserver. Also remember that security is only limited to a localhost filter by default, so reversing to localhost or 127.0.0.1:3030 directly means that the admin api is reachable. The role is often used with reverse-proxying only to the read endpoints e.g localhost:3030/test_db/ from examples below.
 

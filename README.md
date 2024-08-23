@@ -1,7 +1,5 @@
 # Ansible Role: Apache Jena/Fuseki SPARQL Server
 
-[![Build Status](https://travis-ci.org/paginagmbh/ansible-role-fuseki.svg?branch=master)](https://travis-ci.org/paginagmbh/ansible-role-fuseki)
-
 An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/documentation/fuseki2/) and [Apache Jena Commands](https://jena.apache.org/documentation/tools/index.html) on Linux, and lets you configure it for running it as a systemd service, with the option of enabling additional modules such as jena-text, jena-geosparql, jena-service-enhancer, read-write endpoints and SHACL.
 
 ## Requirements

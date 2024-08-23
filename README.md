@@ -41,13 +41,8 @@ By default, a read-only query and read-only graph store endpoint is configured i
 Full example with all features
 
 ``` yaml
-- name: "install required and optional dependencies"
-  package:
-    name:  ["unzip", "java-21-openjdk", "java-21-openjdk-headless"]
-  become: true
-
 - name: "Example of all features, except overriding base paths"
-  hosts: all
+  hosts: fuseki-all-host
   tasks:
     - name: "install required dependencies"
       package:

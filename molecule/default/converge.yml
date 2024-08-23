@@ -37,6 +37,7 @@
         fuseki_configurations:
         - name: "test-db_all"
           read_write: true
+          write_timeout: "70000,200000"
           union_default_graph: true
           lucene: true
           geosparql: true

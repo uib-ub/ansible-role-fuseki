@@ -110,8 +110,17 @@ Full example with all features
               [ text:field "label" ;
                text:predicate ex:name ] )
           extra_conf: |
-          # generic block to insert extra assembler configuration not covered by booleans
-          shiro_users:
+            # generic block to insert extra assembler configuration not covered by booleans
+          # block for insert shiro url rules https://shiro.apache.org/web.html#urls
+          fuseki_shiro_url_rules: |
+            /$/backup  = authcBasic,user[admin]
+        # Can use shiro command line hasher (https://shiro.apache.org/command-line-hasher.html) to generate a password stanza to use for password_stanza
+        # The password stanza should/could also be vaulted in your playbook, so it is only viewable in the shiro.ini file on server 
+        fuseki_shiro_users:   
+        - name: "admin"
+          password_stanza: "$shiro2$argon2id$v=19$t=1,m=65536,p=4$Wr/2XKxWeYZt8JE5HCONQw$yev4bLiGzbeIZ8qDWrIY7J2msL2vRO/aYksb4RMeX7Y"
+        - name: "reader"
+          password_stanza: "{{ reader_password_stanza }}"
 
 
 ```

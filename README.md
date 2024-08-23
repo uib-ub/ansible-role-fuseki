@@ -34,7 +34,7 @@ By default, a read-only query and read-only graph store endpoint is configured i
   become: true
 
 - import_role:
-    name: "fuseki
+    name: "fuseki"
   vars:
   fuseki_configurations:
   - name: "test_db"
@@ -43,29 +43,24 @@ By default, a read-only query and read-only graph store endpoint is configured i
 Full example with all features
 
 ``` yaml
-- role: geerlingguy.java
+- name: "install required and optional dependencies"
+  package:
+    name:  ["unzip", "java-21-openjdk", "java-21-openjdk-headless"]
+  become: true
 
-
-- name: Converge
+- name: "Example of all features, except overriding base paths"
   hosts: all
-  become_method: su
   tasks:
-    - name: "update dnf"
-      dnf:
-        name: "*"
-        state: "latest"
-      become: true
-
     - name: "install required dependencies"
       package:
         name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless"]
       become: true
 
     - name: "Include fuseki"
-      include_role:
+      import_role:
         name: "fuseki"
       vars:
-        # removing `apache_jena` from fuseki_components, fuseki can also be omited, if only Apache Jena is required)
+        # removing `apache_jena` from fuseki_components, fuseki can also be omited, if only Apache Jena is required.
 #       fuseki_components:
         - "apache-jena-fuseki"
         # using older version for demonstration

@@ -55,7 +55,8 @@
     fuseki:serviceUpdate "update" ;
     fuseki:serviceUpload "upload" ;
     fuseki:serviceReadWriteGraphStore "data" ;
-    ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "30000,120000" ] ;
+ {# set a default high timeout for write endpoints #}
+    ja:context [ ja:cxtName "arq:queryTimeout" ;  ja:cxtValue "{{ item.write_timeout | default('60000,120000') }}" ] ;
 
     .
 {% endif %}

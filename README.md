@@ -81,6 +81,9 @@ Full example with all features
         fuseki_configurations:
         - name: "test_db"
         - name: "test-db_all"
+          # arqQueryTimeout set on write endpoint can be a single value, or first reponse, timeout. 
+          # In milliseconds
+          write_timeout: "70000,200000"
           dataset_type: "tdb" # only tdb|tdb2 (default) implemented in role
           read_write: true # default false, creates a secondary dataset using the same database directory, that appends `_write` to the database_name e.g `test-db_all_write`
           union_default_graph: true # default false

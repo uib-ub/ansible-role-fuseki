@@ -3,12 +3,6 @@
     path: /etc/systemd/system/fuseki-compact.service
     state: absent
 
-- name: "Disable fuseki compacting timer"
-  systemd:
-    daemon_reload: "yes"
-    name: "fuseki-compact.timer"
-    state: disabled
-
 - name: "Remove fuseki compacting Timer"
   file:
     src: "fuseki-compact.timer.j2"

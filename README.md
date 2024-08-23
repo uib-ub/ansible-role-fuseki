@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/paginagmbh/ansible-role-fuseki.svg?branch=master)](https://travis-ci.org/paginagmbh/ansible-role-fuseki)
 
-An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/documentation/fuseki2/) on Linux, and lets you configure it for running it as a systemd service, using additional modules such as jena-text, jena-geosparql and jena-service-enhancer.
+An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/documentation/fuseki2/) and [Apache Jena Commands](https://jena.apache.org/documentation/tools/index.html) on Linux, and lets you configure it for running it as a systemd service, using additional modules such as jena-text, jena-geosparql and jena-service-enhancer and SHACL.
 
 ## Requirement
 

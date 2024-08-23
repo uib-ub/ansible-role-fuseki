@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/paginagmbh/ansible-role-fuseki.svg?branch=master)](https://travis-ci.org/paginagmbh/ansible-role-fuseki)
 
-An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/documentation/fuseki2/) and [Apache Jena Commands](https://jena.apache.org/documentation/tools/index.html) on Linux, and lets you configure it for running it as a systemd service, using additional modules such as jena-text, jena-geosparql and jena-service-enhancer and SHACL.
+An Ansible Role that installs [Apache Jena/Fuseki](https://jena.apache.org/documentation/fuseki2/) and [Apache Jena Commands](https://jena.apache.org/documentation/tools/index.html) on Linux, and lets you configure it for running it as a systemd service, with the option of enabling additional modules such as jena-text, jena-geosparql, jena-service-enhancer, read-write endpoints and SHACL.
 
-## Requirement
+## Requirements
 
 A Java runtime has to be installed on the target host. Apache Jena and Apache Jena Fuseki aims to support the last two LTS releases of java and will post a new major release when a LTS is no longer in use.
 
@@ -13,7 +13,7 @@ A Java runtime has to be installed on the target host. Apache Jena and Apache Je
 
 The default version if none is set is now 5.0, so a java >= 17 is currently required, if the version isn't lowered.
 
-When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_network_relay` or `httpd_can_network_connect`, based on the configuration, if fuseki is behind an Apache webserver. Also remember that security is only limited to a localhost filter by default, so reversing to localhost or 127.0.0.1:3030 directly means that the admin api is reachable. The role is often used with reverse-proxying only to the read endpoints. 
+When used from Enterprise Linux, remember to add selinux boolean for `httpd_can_network_relay` or `httpd_can_network_connect`, based on the configuration, if fuseki is behind an Apache webserver. Also remember that security is only limited to a localhost filter by default, so reversing to localhost or 127.0.0.1:3030 directly means that the admin api is reachable. The role is often used with reverse-proxying only to the read endpoints e.g localhost:3030/test_db/ from examples below.
 
 The Jena-text module enables optimizations for java 21 > if enabled.
 

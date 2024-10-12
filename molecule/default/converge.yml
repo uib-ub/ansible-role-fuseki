@@ -18,6 +18,8 @@
       include_role:
         name: "fuseki"
       vars:
+        fuseki_version: "5.2.0"
+        fuseki_staging: true
         fuseki_shiro_url_rules: |
 
             /$/status  = authcBasic,user[admin]

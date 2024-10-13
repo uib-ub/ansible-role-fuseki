@@ -1,16 +1,9 @@
 ---
 name: CI
-'on':
-  pull_request:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: "0 5 * * 0"
-
+on: workflow_dispatch
 defaults:
   run:
-    working-directory: 'geerlingguy.apache'
+    working-directory: 'uib-ub.fuseki'
 
 jobs:
 
@@ -40,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        distro:
+        distro:	
           - ubi9
 #          - ubuntu2204eee
 #          - debian11
@@ -50,7 +43,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v4
         with:
-          path: 'oyvindlgjesdal.fuseki'
+          path: 'uib-ub.fuseki'
 
       - name: Set up Python 3.
         uses: actions/setup-python@v5

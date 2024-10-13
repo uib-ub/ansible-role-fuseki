@@ -4,7 +4,7 @@
   register: fuseki_present
   when: "'apache-jena-fuseki' in fuseki_components"
   changed_when: false
-    
+
 - name: Ensure fuseki_user group exists.
   group:
     name: "{{ fuseki_user }}"
@@ -46,12 +46,17 @@
     fuseki_jena_symlink_target: "/opt/apache-jena-{{ fuseki_version }}"
     msg: "{{ fuseki_symlink_status }}"
 
-- name: "stop fuseki systemd if fuseki symlink exists and if the active symlink target is different than the configured symlinked"
+- name: "stop fuseki systemd if fuseki symlink exists
+  and if the active symlink target is different
+  than the configured symlinked"
   systemd:
     name: "fuseki"
     state: "stopped"
   become: true
-  when: "(fuseki_symlink_status.stat.exists | bool or fuseki_jena_symlink_status.stat.exists | bool) and (fuseki_symlink_status.stat.lnk_target != fuseki_symlink_target or fuseki_jena_symlink_status.stat.lnk_target != fuseki_jena_symlink_target)"
+  when: "(fuseki_symlink_status.stat.exists | bool or
+  fuseki_jena_symlink_status.stat.exists | bool) and
+  (fuseki_symlink_status.stat.lnk_target != fuseki_symlink_target or
+  fuseki_jena_symlink_status.stat.lnk_target != fuseki_jena_symlink_target)"
 
 - name: Get gpg keys
   get_url:

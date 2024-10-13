@@ -5,10 +5,10 @@
     backup: true
   become: true
 
-  #- name: "debug shiro.ini"
-  #shell: "cat /var/fuseki/shiro.ini"
-  #register: "shiro_cat_output"
+  # - name: "debug shiro.ini"
+  # shell: "cat /var/fuseki/shiro.ini"
+  # register: "shiro_cat_output"
 
-  #- name: "debug shiro.ini"
-  #debug:
+  # - name: "debug shiro.ini"
+  # debug:
   #  msg: "{{ shiro_cat_output }}"

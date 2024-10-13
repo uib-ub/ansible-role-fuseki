@@ -198,14 +198,14 @@
         - "{{ fuseki_base }}"
         - "{{ fuseki_base }}/configuration"
 
-  - name: "databases folder is recursively owned and by the fuseki user"
-    file:
-      path: "{{ fuseki_base }}/databases"
-      owner: "{{ fuseki_user }}"
-      group: "{{ fuseki_user }}"
-      mode: 0770
-      recurse: false
-      state: "directory"
+    - name: "databases folder is recursively owned and by the fuseki user"
+      file:
+        path: "{{ fuseki_base }}/databases"
+        owner: "{{ fuseki_user }}"
+        group: "{{ fuseki_user }}"
+        mode: 0770
+        recurse: false
+        state: "directory"
     become: true
 
   - name: "Configure Fuseki"

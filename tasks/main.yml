@@ -62,7 +62,7 @@
   get_url:
     url: "https://downloads.apache.org/jena/KEYS"
     dest: "{{ fuseki_workspace }}/KEYS"
-    force: "no"
+    force: false
   become: true
   register: "gpg_keys"
 
@@ -73,10 +73,11 @@
 
 - name: Download Fuseki
   get_url:
-    url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
+    url: "{{ fuseki_mirror }}/jena/binaries/{{
+    item.item }}-{{ fuseki_version }}.tar.gz"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
     checksum: "sha512:{{ fuseki_checksum }}"
-    force: no
+    force: false
   with_items: "{{ fuseki_install_status.results }}"
   when: "item.stat.isdir is not defined and item.item == 'apache-jena-fuseki'"
   register: fuseki_download_status
@@ -87,18 +88,17 @@
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
     checksum: "sha512:{{ jena_checksum }}"
-    force: no
+    force: false
   with_items: "{{ fuseki_install_status.results }}"
   when: "item.stat.isdir is not defined and item.item == 'apache-jena'"
   register: jena_download_status
   become: true
 
-
 - name: Download Fuseki and Jena asc files for verification
   get_url:
     url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz.asc"
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
-    force: no
+    force: false
   with_items: "{{ fuseki_install_status.results }}"
   when: item.stat.isdir is not defined
   register: fuseki_gpg_download_status
@@ -111,11 +111,12 @@
 
 - name: "add to trust store"
   command: "gpg --import-ownertrust {{ fuseki_workspace }}/trust"
-  when: "gpg_keys.changed | bool" 
-
+  when: "gpg_keys.changed | bool"
 
 - name: Verify Fuseki and Jena
-  command: "gpg  --verify {{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc {{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
+  command: "gpg  --verify {{ fuseki_workspace }}/{{
+  item.item }}-{{fuseki_version }}.tar.gz.asc {{
+  fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
   with_items: "{{ fuseki_install_status.results }}"
   register: fuseki_gpg_verification
   when: item.stat.isdir is not defined
@@ -126,7 +127,8 @@
     src: "files/trust"
     dest: "{{ fuseki_workspace }}/trust"
 
-- name: "fail the job if gpp verification doesn't contain the string  'Good signature from'"
+- name: "fail the job if gpp verification doesn't
+  contain the string  'Good signature from'"
   fail:
     msg: "{{ fuseki_gpg_verification }}"
   loop: "{{ fuseki_gpg_verification.results }}"

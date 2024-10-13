@@ -1,4 +1,3 @@
-# starting ansible molecule job from https://github.com/geerlingguy/ansible-role-apache/blob/master/molecule/default/molecule.yml
 ---
 name: CI
 'on':

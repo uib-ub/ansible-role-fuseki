@@ -9,7 +9,8 @@ platforms:
     version: latest
     pre_build_image: true
     port_bindings: {3030:3030}
-    privileged: True
+    privileged: true
+    pre_build_image: true
     command: "/sbin/init"
     volume_mounts:
     - "/sys/fs/cgroup:/sys/fs/cgroup:rw"

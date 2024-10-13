@@ -18,6 +18,11 @@
       include_role:
         name: "fuseki"
       vars:
+        maven_repo: "https://repository.apache.org/content/repositories/orgapachejena-1066"
+        fuseki_version: "5.2.0"
+        fuseki_checksum: "650d4576927cb4e330c372c46f76dde3fbd683b59cc692bac501b545097402c58c2254b25502e4225ba6f7d4c79ee12c5e43b78124115dbbe6371c487aa8604f"
+        jena_checksum: "9a66044573ca269c0a9a1191fe7a8e1925f2d77e2e0bdadddd68616a1bafed1d9819c0b2988dd03614ec778a3882ccb091d825976fc0837406916f9f001b701c"
+        fuseki_staging: true
         fuseki_shiro_url_rules: |
 
             /$/status  = authcBasic,user[admin]

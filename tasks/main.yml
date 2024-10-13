@@ -132,11 +132,13 @@
   fail:
     msg: "{{ fuseki_gpg_verification }}"
   loop: "{{ fuseki_gpg_verification.results }}"
-  when: "fuseki_download_status.changed and not 'Good signature from' in item.stderr"
+  when: "fuseki_download_status.changed and
+         not 'Good signature from' in item.stderr"
 
 - name: Expand Fuseki
   unarchive:
-    src: "{{ fuseki_workspace }}/{{ item.item.item }}-{{fuseki_version }}.tar.gz"
+    src: "{{ fuseki_workspace }}/{{
+          item.item.item }}-{{fuseki_version }}.tar.gz"
     dest: "{{ fuseki_install_dir }}"
     copy: no
   with_items: "{{ fuseki_download_status.results }}"
@@ -145,7 +147,8 @@
 
 - name: Expand Jena
   unarchive:
-    src: "{{ fuseki_workspace }}/{{ item.item.item }}-{{fuseki_version }}.tar.gz"
+    src: "{{ fuseki_workspace }}/{{
+          item.item.item }}-{{fuseki_version }}.tar.gz"
     dest: "{{ fuseki_install_dir }}"
     copy: no
   with_items: "{{ jena_download_status.results }}"
@@ -155,7 +158,8 @@
 - name: Create symlink to unnumbered apache jena and fuseki
   file:
     src: "{{fuseki_install_dir}}/{{ item }}-{{ fuseki_version }}"
-    dest: "/opt/{{ item | replace('apache-','') | replace('jena-fuseki','fuseki')}}"
+    dest: "/opt/{{ item | replace('apache-','') |
+          replace('jena-fuseki','fuseki')}}"
     state: link
     owner: "{{fuseki_user}}"
     group: "{{fuseki_user}}"
@@ -169,30 +173,30 @@
   with_items: "{{ fuseki_components }}"
   become: true
 
-- name: "Configure environment ($PATH)."
+- name: "Configure environment ($PATH)"
   template:
     src: "env.sh.j2"
     dest: "/etc/profile.d/fuseki.sh"
   become: true
-  
-- name: set up and configure fuseki
-  block:  
-  - name: Configure Fuseki defaults.
-    template:
-      src: "fuseki-defaults.j2"
-      dest: "/etc/default/fuseki"
-    notify: "fuseki restart"
 
-  - name: "Ensure that $FUSEKI_BASE, and subdirs configuration and databases exists."
-    file:
-      path: "{{ item }}"
-      owner: "{{ fuseki_user }}"
-      group: "{{ fuseki_user }}"
-      mode: 0770
-      state: directory
-    with_items:
-      - "{{ fuseki_base }}"
-      - "{{ fuseki_base }}/configuration"
+- name: set up and configure fuseki
+  block:
+    - name: Configure Fuseki defaults
+      template:
+        src: "fuseki-defaults.j2"
+        dest: "/etc/default/fuseki"
+      notify: "fuseki restart"
+
+    - name: "Ensure that $FUSEKI_BASE, and subdir configuration exists"
+      file:
+        path: "{{ item }}"
+        owner: "{{ fuseki_user }}"
+        group: "{{ fuseki_user }}"
+        mode: 0770
+        state: directory
+      with_items:
+        - "{{ fuseki_base }}"
+        - "{{ fuseki_base }}/configuration"
 
   - name: "databases folder is recursively owned and by the fuseki user"
     file:
@@ -224,7 +228,6 @@
     when: item.config is defined
     with_items: "{{ fuseki_configurations }}"
 
-
   - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
     template:
       src: fuseki.unit.j2
@@ -233,14 +236,14 @@
       group: root
       mode: 0755
     notify: "fuseki restart"
-  
+
   - name: "Import compacting tasks"
     import_tasks: "compacting.yml"
     when: fuseki_compacting | bool
 
   - name: "Import modules.yml"
     import_tasks: "modules.yml"
-  
+
   - name: "Import reindex.yml"
     import_tasks: "reindex.yml"
     when: "fuseki_lucene | default (false) | bool"

@@ -206,7 +206,7 @@
         mode: 0770
         recurse: false
         state: "directory"
-    become: true
+  become: true
 
   - name: "Configure Fuseki"
     template:

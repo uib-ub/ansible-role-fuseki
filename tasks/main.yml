@@ -58,7 +58,8 @@
          (fuseki_symlink_status.stat.exists | bool or
          fuseki_jena_symlink_status.stat.exists | bool) and
          (fuseki_symlink_status.stat.lnk_target != fuseki_symlink_target or
-         fuseki_jena_symlink_status.stat.lnk_target != fuseki_jena_symlink_target)
+         fuseki_jena_symlink_status.stat.lnk_target
+         != fuseki_jena_symlink_target)
 
 - name: Get gpg keys
   get_url:
@@ -104,7 +105,9 @@
     url: |
           {{ fuseki_mirror }}/jena/binaries/{{ item.item
           }}-{{ fuseki_version }}.tar.gz.asc
-    dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
+    dest: |
+          {{ fuseki_workspace }}/{{ item.item
+          }}-{{fuseki_version }}.tar.gz.asc
     force: false
   with_items: "{{ fuseki_install_status.results }}"
   when: item.stat.isdir is not defined
@@ -150,7 +153,7 @@
     src: "{{ fuseki_workspace }}/{{
           item.item.item }}-{{fuseki_version }}.tar.gz"
     dest: "{{ fuseki_install_dir }}"
-    copy: no
+    copy: false
   with_items: "{{ fuseki_download_status.results }}"
   when: item.changed == true
   become: true
@@ -160,7 +163,7 @@
     src: "{{ fuseki_workspace }}/{{
           item.item.item }}-{{fuseki_version }}.tar.gz"
     dest: "{{ fuseki_install_dir }}"
-    copy: no
+    copy: false
   with_items: "{{ jena_download_status.results }}"
   when: item.changed == true
   become: true
@@ -237,7 +240,9 @@
       when: item.config is defined
       with_items: "{{ fuseki_configurations }}"
 
-    - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
+    - name: |
+             Copy Fuseki systemd unit file into place
+             (template from Apache jena-fuseki)
       template:
         src: fuseki.unit.j2
         dest: /etc/systemd/system/fuseki.service

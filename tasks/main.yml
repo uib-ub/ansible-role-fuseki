@@ -16,7 +16,7 @@
   user:
     name: "{{ fuseki_user }}"
     group: "{{ fuseki_user }}"
-    system: yes
+    system: true
     state: present
   when: fuseki_create_user | bool
   become: true

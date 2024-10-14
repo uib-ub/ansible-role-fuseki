@@ -93,7 +93,7 @@
           {{ fuseki_mirror }}/jena/binaries/{{ item.item
           }}-{{ fuseki_version }}.tar.gz
     # yamllint disable-line rule:line-length
-    dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz" # noqa: [line-length]
+    dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
     checksum: "sha512:{{ jena_checksum }}"
     force: false
   with_items: "{{ fuseki_install_status.results }}"
@@ -106,6 +106,7 @@
     url: |
           {{ fuseki_mirror }}/jena/binaries/{{ item.item
           }}-{{ fuseki_version }}.tar.gz.asc
+    # yamllint disable-line rule:line-length
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
     force: false
   with_items: "{{ fuseki_install_status.results }}"

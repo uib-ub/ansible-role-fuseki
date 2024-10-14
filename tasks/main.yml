@@ -92,7 +92,7 @@
     url: |
           {{ fuseki_mirror }}/jena/binaries/{{ item.item
           }}-{{ fuseki_version }}.tar.gz
-    dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
+    dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz" #noqa: line-length
     checksum: "sha512:{{ jena_checksum }}"
     force: false
   with_items: "{{ fuseki_install_status.results }}"
@@ -105,9 +105,7 @@
     url: |
           {{ fuseki_mirror }}/jena/binaries/{{ item.item
           }}-{{ fuseki_version }}.tar.gz.asc
-    dest: |
-          {{ fuseki_workspace }}/{{ item.item
-          }}-{{fuseki_version }}.tar.gz.asc
+    dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
     force: false
   with_items: "{{ fuseki_install_status.results }}"
   when: item.stat.isdir is not defined

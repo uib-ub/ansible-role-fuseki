@@ -75,8 +75,9 @@
 
 - name: Download Fuseki
   get_url:
-    url: "{{ fuseki_mirror }}/jena/binaries/{{
-    item.item }}-{{ fuseki_version }}.tar.gz"
+    url: |
+          {{ fuseki_mirror }}/jena/binaries/{{ item.item
+          }}-{{ fuseki_version }}.tar.gz
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
     checksum: "sha512:{{ fuseki_checksum }}"
     force: false
@@ -87,7 +88,9 @@
 
 - name: Download Jena.
   get_url:
-    url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz"
+    url: |
+          {{ fuseki_mirror }}/jena/binaries/{{ item.item
+          }}-{{ fuseki_version }}.tar.gz
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
     checksum: "sha512:{{ jena_checksum }}"
     force: false
@@ -98,7 +101,9 @@
 
 - name: Download Fuseki and Jena asc files for verification
   get_url:
-    url: "{{ fuseki_mirror }}/jena/binaries/{{ item.item }}-{{ fuseki_version }}.tar.gz.asc"
+    url: |
+          {{ fuseki_mirror }}/jena/binaries/{{ item.item
+          }}-{{ fuseki_version }}.tar.gz.asc
     dest: "{{ fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz.asc"
     force: false
   with_items: "{{ fuseki_install_status.results }}"
@@ -116,9 +121,11 @@
   when: "gpg_keys.changed | bool"
 
 - name: Verify Fuseki and Jena
-  command: "gpg  --verify {{ fuseki_workspace }}/{{
-  item.item }}-{{fuseki_version }}.tar.gz.asc {{
-  fuseki_workspace }}/{{ item.item }}-{{fuseki_version }}.tar.gz"
+  command: |
+            gpg  --verify {{ fuseki_workspace }}/{{ item.item
+            }}-{{fuseki_version }}.tar.gz.asc {{
+            fuseki_workspace }}/{{ item.item
+            }}-{{fuseki_version }}.tar.gz
   with_items: "{{ fuseki_install_status.results }}"
   register: fuseki_gpg_verification
   when: item.stat.isdir is not defined
@@ -129,8 +136,9 @@
     src: "files/trust"
     dest: "{{ fuseki_workspace }}/trust"
 
-- name: "fail the job if gpp verification doesn't
-  contain the string  'Good signature from'"
+- name: |
+         fail the job if gpp verification doesn't
+         contain the string  'Good signature from'
   fail:
     msg: "{{ fuseki_gpg_verification }}"
   loop: "{{ fuseki_gpg_verification.results }}"
@@ -208,85 +216,85 @@
         mode: 0770
         recurse: false
         state: "directory"
-  become: true
 
-  - name: "Configure Fuseki"
-    template:
-      src: "fuseki-config.ttl.j2"
-      dest: "{{ fuseki_base }}/configuration/{{ item.name }}.ttl"
-      owner: "{{ fuseki_user }}"
-      group: "{{ fuseki_user }}"
-      mode: 0440
-    with_items: "{{ fuseki_configurations }}"
-    notify: "fuseki restart"
+    - name: "Configure Fuseki"
+      template:
+        src: "fuseki-config.ttl.j2"
+        dest: "{{ fuseki_base }}/configuration/{{ item.name }}.ttl"
+        owner: "{{ fuseki_user }}"
+        group: "{{ fuseki_user }}"
+        mode: 0440
+      with_items: "{{ fuseki_configurations }}"
+      notify: "fuseki restart"
 
-  - name: "Copy fuseki configuration files"
-    copy:
-      src: "{{ item.config }}"
-      dest: "{{ fuseki_base }}/configuration/{{ item.name }}.ttl"
-      owner: "{{ fuseki_user }}"
-      group: "{{ fuseki_group }}"
-      mode: "0440"
-    when: item.config is defined
-    with_items: "{{ fuseki_configurations }}"
+    - name: "Copy fuseki configuration files"
+      copy:
+        src: "{{ item.config }}"
+        dest: "{{ fuseki_base }}/configuration/{{ item.name }}.ttl"
+        owner: "{{ fuseki_user }}"
+        group: "{{ fuseki_group }}"
+        mode: "0440"
+      when: item.config is defined
+      with_items: "{{ fuseki_configurations }}"
 
-  - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
-    template:
-      src: fuseki.unit.j2
-      dest: /etc/systemd/system/fuseki.service
-      owner: root
-      group: root
-      mode: 0755
-    notify: "fuseki restart"
-
-  - name: "Import compacting tasks"
-    import_tasks: "compacting.yml"
-    when: fuseki_compacting | bool
-
-  - name: "Import modules.yml"
-    import_tasks: "modules.yml"
-
-  - name: "Import reindex.yml"
-    import_tasks: "reindex.yml"
-    when: "fuseki_lucene | default (false) | bool"
-
-  - name: "make sure fuseki server is executable"
-    file:
-      path: "{{ fuseki_home }}/fuseki-server"
-      mode: "+x"
-    become: true
-
-  - name: debug
-    shell: journalctl -u fuseki --since today
-    register: fuseki_debug_status
-    ignore_errors: true
-    changed_when: false
-    become: true
-    when: "fuseki_debug | bool"
-
-  - name: "debug"
-    debug:
-      msg: "{{ fuseki_debug_status }}"
-    changed_when: false
-    when: "fuseki_debug | bool"
+    - name: "Copy Fuseki systemd unit file into place (template from jena-fuseki)"
+      template:
+        src: fuseki.unit.j2
+        dest: /etc/systemd/system/fuseki.service
+        owner: root
+        group: root
+        mode: 0755
+      notify: "fuseki restart"
 
 
-  - name: "Ensure fuseki is enabled"
-    systemd:
-      name: "fuseki"
-      state: started
-      enabled: true
-    become: true
+    - name: "Import compacting tasks"
+      import_tasks: "compacting.yml"
+      when: fuseki_compacting | bool
 
-  - name: "add user password configuration if configured"
-    import_tasks: "shiro.yml"
-    when: "fuseki_shiro_users is defined and fuseki_shiro_users | length > 0"
+    - name: "Import modules.yml"
+      import_tasks: "modules.yml"
 
-  - name: "Ensure Fuseki is started"
-    systemd:
-      name: "fuseki"
-      state: "started"
-    when: fuseki_service_manage | bool
-    register: fuseki_started
+    - name: "Import reindex.yml"
+      import_tasks: "reindex.yml"
+      when: "fuseki_lucene | default (false) | bool"
+
+    - name: "make sure fuseki server is executable"
+      file:
+        path: "{{ fuseki_home }}/fuseki-server"
+        mode: "+x"
+      become: true
+
+    - name: debug
+      shell: journalctl -u fuseki --since today
+      register: fuseki_debug_status
+      ignore_errors: true
+      changed_when: false
+      become: true
+      when: "fuseki_debug | bool"
+
+    - name: "debug"
+      debug:
+        msg: "{{ fuseki_debug_status }}"
+      changed_when: false
+      when: "fuseki_debug | bool"
+
+
+    - name: "Ensure fuseki is enabled"
+      systemd:
+        name: "fuseki"
+        state: started
+        enabled: true
+      become: true
+
+    - name: "add user password configuration if configured"
+      import_tasks: "shiro.yml"
+      when: "fuseki_shiro_users is defined and fuseki_shiro_users | length > 0"
+
+    - name: "Ensure Fuseki is started"
+      systemd:
+        name: "fuseki"
+        state: "started"
+      when: fuseki_service_manage | bool
+      register: fuseki_started
   when: "fuseki_present.stdout is defined and fuseki_present.stdout == 'fuseki'"
   become: true

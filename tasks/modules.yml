@@ -1,11 +1,11 @@
-#- name: "comment out normal startup"
+# - name: "comment out normal startup"
 #  lineinfile:
 #    path: "{{ fuseki_home }}/fuseki-server"
 #    regexp: "^(exec \\$JAVA \\$JVM_ARGS -jar.+)"
 #    line: "#\\1"
 
-#- name: "Update fuseki-server to add library modules"
-#  lineinfile:
+# - name: "Update fuseki-server to add library modules"
+#   lineinfile:
 #    path: "{{ fuseki_home }}/fuseki-server"
 #    line: "java $JVM_ARGS -cp \"$JAR:$FUSEKI_EXTRA\" org.apache.jena.fuseki.cmd.FusekiCmd \"$@\""
 #    state: "present"
@@ -19,25 +19,41 @@
 
 - name: "get serviceenhancer"
   get_url:
-    url: " {{ service_enhancer_url | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/' ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}"
+    url: |
+         {{ service_enhancer_url
+         | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/'
+         ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}
     dest: "{{ fuseki_base }}/extra"
   become: true
   become_user: fuseki
-  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
+  when: |
+         fuseki_configurations |
+         selectattr('service_enhancer', 'defined')
+         | selectattr('service_enhancer', 'equalto', true) | list
+         | length > 0
 
 - name: "get guava dependency for jena service enhancer"
   get_url:
     url: "https://repo1.maven.org/maven2/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar"
     dest: "{{ fuseki_base }}/extra"
   become: true
-  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"  
+  when: |
+         fuseki_configurations |  selectattr('service_enhancer', 'defined')
+         | selectattr('service_enhancer', 'equalto', true) | list
+         | length > 0
 
 - name: "Download geosparql"
   get_url:
-    url: "{{ maven_repo | default('https://repo1.maven.org/maven2') }}/org/apache/jena/jena-fuseki-geosparql/{{ fuseki_version }}/jena-fuseki-geosparql-{{ fuseki_version }}.jar"
+    url: |
+        {{ maven_repo | default('https://repo1.maven.org/maven2')
+        }}/org/apache/jena/jena-fuseki-geosparql/{{ fuseki_version
+        }}/jena-fuseki-geosparql-{{ fuseki_version }}.jar
     dest: "{{ fuseki_base }}/extra/jena-fuseki-geosparql-{{ fuseki_version }}.jar"
   become: true
-  when: "fuseki_configurations |  selectattr('geosparql', 'defined') | selectattr('geosparql', 'equalto', true) | list | length > 0"
+  when: |
+         fuseki_configurations |
+         selectattr('geosparql', 'defined')
+         | selectattr('geosparql', 'equalto', true) | list | length > 0"
 
 - name: "Download modules to $JENA_BASE/extra"
   get_url:

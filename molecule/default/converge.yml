@@ -15,8 +15,8 @@
       become: true
 
     - name: "Include fuseki"
-      include_role:
-        name: "fuseki"
+      import_role:
+        name: "oyvindlgjesdal.fuseki"
       vars:
         fuseki_shiro_url_rules: |
 

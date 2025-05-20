@@ -15,8 +15,8 @@
       become: true
 
     - name: "Include fuseki"
-      include_role:
-        name: "fuseki"
+      import_role:
+        name: "oyvindlgjesdal.fuseki"
       vars:
         maven_repo: "https://repository.apache.org/content/repositories/orgapachejena-1066"
         fuseki_version: "5.2.0"

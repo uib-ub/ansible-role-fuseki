@@ -24,7 +24,6 @@ localhostFilter=org.apache.jena.fuseki.authz.LocalhostFilter
 
 {% endfor %}
 [roles]
-test= /$/status
 {{ fuseki_shiro_roles_section | default('') }}
 [urls]
 ## Control functions open to anyone

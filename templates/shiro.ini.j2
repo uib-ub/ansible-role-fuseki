@@ -19,8 +19,13 @@ localhostFilter=org.apache.jena.fuseki.authz.LocalhostFilter
 # java -jar ./repository/org/apache/shiro/tools/shiro-tools-hasher/2.0.1/shiro-tools-hasher-2.0.1-cli.jar -p
 #password has to be quoted to correctly pick up parameters https://github.com/apache/shiro/issues/1385
 
+{#
+roles can be defined here without having in roles fuseki_shiro_roles_section
+if no specific named permissions are needed (e.g just using a role for a path) 
+#}
+
 {% for user in fuseki_shiro_users %}
-{{user.name}}="{{ user.password_stanza }}"
+{{user.name}}="{{ user.password_stanza }}"{% if user.roles is defined %},{{ user.roles }}{% endif %}
 
 {% endfor %}
 [roles]

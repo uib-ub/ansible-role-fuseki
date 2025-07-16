@@ -102,7 +102,7 @@
 {% if item.geosparql | default (false) | bool %}
 
 <#geo_dataset> a geosparql:GeosparqlDataset ; 
-    geosparql:spatialIndexFile "{{ fuseki_base }}/databases/{{ item.name }}/DB/spatial.index";
+    geosparql:spatialIndexFile "{{ fuseki_base }}/databases/{{ item.name }}/spatial.index";
     geosparql:dataset <#dataset> .
 
 

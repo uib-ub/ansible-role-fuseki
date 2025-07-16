@@ -32,6 +32,13 @@
   become: true
   when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"  
 
+- name: "Download geosparql"
+  get_url:
+    url: "{{ maven_repo | default('https://repo1.maven.org/maven2') }}/org/apache/jena/jena-fuseki-geosparql/{{ fuseki_version }}/jena-fuseki-geosparql-{{ fuseki_version }}.jar"
+    dest: "{{ fuseki_base }}/extra/jena-fuseki-geosparql-{{ fuseki_version }}.jar"
+  become: true
+  when: "fuseki_configurations |  selectattr('geosparql', 'defined') | selectattr('geosparql', 'equalto', true) | list | length > 0"
+
 - name: "Download modules to $JENA_BASE/extra"
   get_url:
     url: "{{ item }}"

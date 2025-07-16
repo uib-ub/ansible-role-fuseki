@@ -21,7 +21,7 @@
   when: fuseki_create_user | bool
   become: true
 
-- name: Check if Fuseki and Jena have been installed already.
+- name: "Check if Fuseki and Jena have been installed already"
   stat:
     path: "{{ fuseki_install_dir }}/{{ item }}-{{ fuseki_version }}"
   with_items: "{{ fuseki_components }}"
@@ -46,8 +46,8 @@
     fuseki_jena_symlink_target: "/opt/apache-jena-{{ fuseki_version }}"
     msg: "{{ fuseki_symlink_status }}"
 
-- name: "stop fuseki systemd if fuseki symlink exists and if the active symlink
-  target is different than the configured symlinked"
+- name: "stop fuseki systemd if fuseki symlink exists and if the active
+  symlink target is different than the configured symlinked"
   systemd:
     name: "fuseki"
     state: "stopped"

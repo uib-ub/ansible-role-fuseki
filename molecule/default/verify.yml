@@ -74,7 +74,6 @@
     file:
      path: "/var/fuseki/databases/test-db_all/spatial.index"
      state: "absent"
-     recurse: true
     become: true
 
   - name: "index lucene"

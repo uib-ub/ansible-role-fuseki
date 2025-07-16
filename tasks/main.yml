@@ -252,6 +252,11 @@
     become: true
     when: "fuseki_debug | bool"
 
+  - name: "debug assembler"
+    shell: "cat {{ fuseki_base }}/configuration/{{ item.name }}.ttl"
+    with_items: "{{ fuseki_configurations }}"
+    when: "fuseki_debug | bool"
+ 
   - name: "debug"
     debug:
       msg: "{{ fuseki_debug_status }}"

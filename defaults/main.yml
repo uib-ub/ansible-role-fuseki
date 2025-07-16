@@ -14,7 +14,7 @@ fuseki_debug: false
 
 fuseki_version: "5.4.0"
 fuseki_staging: false
-fuseki_mirror: "{% if fuseki_staging | bool %}https://dist.apache.org/repos/dist/dev{% else %}https://archive.apache.org/dist%{% endif %}"
+fuseki_mirror: "{% if fuseki_staging | bool %}https://dist.apache.org/repos/dist/dev{% else %}https://archive.apache.org/dist{% endif %}"
 
 fuseki_install_dir: "/opt"
 fuseki_base: "/var/fuseki"

@@ -4,6 +4,7 @@
     dest: "{{ fuseki_base }}/shiro.ini"
     backup: true
   become: true
+  notify: "fuseki restart"
 
   #- name: "debug shiro.ini"
   #shell: "cat /var/fuseki/shiro.ini"

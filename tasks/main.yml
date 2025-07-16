@@ -255,11 +255,12 @@
   - name: "debug assembler"
     shell: "cat {{ fuseki_base }}/configuration/{{ item.name }}.ttl"
     with_items: "{{ fuseki_configurations }}"
+    register: "fuseki_debug_assembler"
     when: "fuseki_debug | bool"
  
-  - name: "debug"
+  - name: "debug output"
     debug:
-      msg: "{{ fuseki_debug_status }}"
+      msg: "{{ fuseki_debug_status }} {{ fuseki_debug_assembler }}"
     changed_when: false
     when: "fuseki_debug | bool"
 

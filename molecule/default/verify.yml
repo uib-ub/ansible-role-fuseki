@@ -97,7 +97,9 @@
     #encode-for-uri('PREFIX spatial: <http://jena.apache.org/spatial#>
     # SELECT ?subj WHERE {?subj spatial:nearby(49.951913 -7.036230 50) } ORDER by ?subj')
   - name: "query for placeA with geo index"
-    shell: "curl -XGET localhost:3030/test-db_all/query?query=PREFIX%20spatial%3A%20%3Chttp%3A%2F%2Fjena.apache.org%2Fspatial%23%3E%0ASELECT%20%3Fsubj%20WHERE%20%7B%3Fsubj%20spatial%3Anearby%2849.951913%20-7.036230%2050%29%20%7D%20ORDER%20by%20%3Fsub"
+    shell: "curl -XGET localhost:3030/test-db_all/query?query=PREFIX%20spatial%3A%20%3Chttp%3A%2F%2Fjena.apache.org%2Fspatial%23%3E%20%20SELECT%20%3Fsubj%20WHERE%20%7BGRAPH%20%3Chttp%3A%2F%2Fexample.org%3E%20%7B%3Fsubj%20spatial%3Anearby%2849.951913%20-7.036230%2050%29%20%7D%7D%20ORDER%20by%20%3Fsubj"
+#
+#PREFIX%20spatial%3A%20%3Chttp%3A%2F%2Fjena.apache.org%2Fspatial%23%3E%0ASELECT%20%3Fsubj%20WHERE%20%7B%3Fsubj%20spatial%3Anearby%2849.951913%20-7.036230%2050%29%20%7D%20ORDER%20by%20%3Fsub"
     register: geosparql_query_result
 
   - name: "query using cache"

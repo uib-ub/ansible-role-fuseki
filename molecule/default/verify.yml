@@ -70,6 +70,13 @@
       state: "stopped"
     become: true
 
+  - name: "delete geo-index"
+    file:
+     path: "/var/fuseki/databases/test-db_all/spatial.index"
+     state: "absent"
+     recurse: true
+    become: true
+
   - name: "index lucene"
     shell: "SIS_DATA=/var/fuseki/databases/test-db_all/sis && mkdir /var/fuseki/databases/test-db_all/DB && java -cp {{ fuseki_home }}/fuseki-server.jar:{{fuseki_base }}/extra/* jena.textindexer --desc={{ fuseki_base }}/configuration/test-db_all.ttl"
     register: lucene_result

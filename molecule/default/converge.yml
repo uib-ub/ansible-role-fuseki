@@ -22,8 +22,8 @@
         fuseki_debug: true
         maven_repo: "https://repository.apache.org/content/repositories/orgapachejena-1071/"
         fuseki_version: "6.0.0"
-        jena_checksum: "fa3078c531e93f1d7b34f9d6510a2dcc891a5a744e50187fbb18a9630e1c6d0490053d0908e9bd1a9b033d31b9b0214e6dce992e871f77eab9aa85cc68bad125"
-        fuseki_checksum: "286df0c0b932ba8f128cd00a3d12dd2c5446f337afd8a45f1960c175d83332ea51c07c707a56ebcd2cd0a8562a7bec4ebe5d4b915c612d23d25e633c2c587ce8"
+        fuseki_checksum: "8b14dcefade409bb4efd94e05291ea46d50508bf175f6f163f328d1d80183559a4c5b75806802283802a2879405a132b9b311e2277f784a784fa66ce4a9d8722"
+        jena_checksum: "c66b413f0c97e465c8a5a71f2718116134c65efa71205e136a42ad0ee6d39deece0dcbcc99801d806e4b60af5fe886c72eb53c77bc464fe9d2d0f1ba2d3ec1fe"
         fuseki_staging: true
         fuseki_shiro_url_rules: |
             /$/status  = authcBasic,user[admin]

@@ -20,10 +20,10 @@
         name: "oyvindlgjesdal.fuseki"
       vars:
         fuseki_debug: true
-        maven_repo: "https://repository.apache.org/content/repositories/orgapachejena-1070"
-        fuseki_version: "5.6.0"
-        fuseki_checksum: "53dfe13cdd5f6387a0c62917e275fde2cd2e2f2052bfe7515384934f24915228b8512a2dd2b50b7060cc300c976254349d991fcea239484cae48e0a59d67cd54"
-        jena_checksum: "220ff50c3b6803c2cdade5479f8812700b281f4153fd73cdb83277b30f3d2c9e8a4a49d09717cfa7dde4fe5c7132a2aaaeeef3fbc474a6773b3d9deb5d63cbaa"
+        maven_repo: "https://repository.apache.org/content/repositories/orgapachejena-1071/"
+        fuseki_version: "6.0.0"
+        jena_checksum: "fa3078c531e93f1d7b34f9d6510a2dcc891a5a744e50187fbb18a9630e1c6d0490053d0908e9bd1a9b033d31b9b0214e6dce992e871f77eab9aa85cc68bad125"
+        fuseki_checksum: "286df0c0b932ba8f128cd00a3d12dd2c5446f337afd8a45f1960c175d83332ea51c07c707a56ebcd2cd0a8562a7bec4ebe5d4b915c612d23d25e633c2c587ce8"
         fuseki_staging: true
         fuseki_shiro_url_rules: |
             /$/status  = authcBasic,user[admin]

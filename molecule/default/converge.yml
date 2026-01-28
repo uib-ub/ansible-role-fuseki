@@ -31,7 +31,7 @@
         - name: "admin"
           password_stanza: "$shiro2$argon2id$v=19$t=1,m=65536,p=4$Wr/2XKxWeYZt8JE5HCONQw$yev4bLiGzbeIZ8qDWrIY7J2msL2vRO/aYksb4RMeX7Y"
         fuseki_workspace: "/tmp/"
-        service_enhancer_url: "https://github.com/OyvindLGjesdal/jena/releases/download/service-enhancer-shaded/jena-serviceenhancer-5.2.0-SNAPSHOT.jar"
+     #   service_enhancer_url: "https://github.com/OyvindLGjesdal/jena/releases/download/service-enhancer-shaded/jena-serviceenhancer-5.2.0-SNAPSHOT.jar"
         #
         fuseki_modules:
                 #

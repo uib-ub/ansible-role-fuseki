@@ -33,10 +33,10 @@
 - name: "get mvn module"
   shell: >
    mvn dependency:copy
-   -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0
+   -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0 -DoutputDirectory={{ fuseki_base }}/extra
    -U
-  &&  mvn dependency:copy
-   -Dartifact=com.google.guava:guava:33.5.0-jre
+   && mvn dependency:copy
+   -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
   args:
     chdir: "{{ fuseki_base }}/extra"
   become: true

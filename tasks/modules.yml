@@ -17,20 +17,43 @@
     owner: "fuseki"
   become: true
 
-- name: "get serviceenhancer"
-  get_url:
-    url: " {{ service_enhancer_url | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/' ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}"
-    dest: "{{ fuseki_base }}/extra"
+- name: "get mvn module"
+  command: >
+   "mvn dependency:get
+   -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0 \
+   -DremoteRepositories=central::default::https://repo.maven.apache.org/maven2,orgapachejena-1071::default::https://repository.apache.org/content/repositories/orgapachejena-1071 \
+   -Dtransitive=true \
+   -U"
+  args:
+    chdir: "{{ fuseki_base }}/extra"
   become: true
   become_user: fuseki
-  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
 
-- name: "get guava dependency for jena service enhancer"
-  get_url:
-    url: "https://repo1.maven.org/maven2/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar"
-    dest: "{{ fuseki_base }}/extra"
-  become: true
-  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"  
+- name: "list files in extra"
+  ansible.builtin.find:
+    paths: "{{ fuseki_base }}/extra
+    age: 2d
+    recurse: yes
+  register: "extra_dir"
+
+- name: "list files in extra"
+  debug:
+    msg: "{{ extra_dir }}" 
+
+#- name: "get serviceenhancer"
+#  get_url:
+#    url: " {{ service_enhancer_url | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/' ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}"
+#    dest: "{{ fuseki_base }}/extra"
+#  become: true
+#  become_user: fuseki
+#  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
+
+#- name: "get guava dependency for jena service enhancer"
+#  get_url:
+#    url: "https://repo1.maven.org/maven2/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar"
+#    dest: "{{ fuseki_base }}/extra"
+#  become: true
+#  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"  
 
 - name: "Download modules to $JENA_BASE/extra"
   get_url:

@@ -25,7 +25,7 @@
    mvn dependency:get
    -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0
    -DremoteRepositories=central::default::https://repo.maven.apache.org/maven2,orgapachejena-1071::default::https://repository.apache.org/content/repositories/orgapachejena-1071
-   -Dtransitive=true --Ddest={{fuseki_base }}/extra/jena-serviceenhancer-6.0.0.jar
+   -Dtransitive=true -Ddest={{fuseki_base }}/extra/jena-serviceenhancer-6.0.0.jar
    -U
   args:
     chdir: "{{ fuseki_base }}/extra"

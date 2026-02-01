@@ -273,10 +273,6 @@
       enabled: true
     become: true
 
-  - name: "debug error output"
-    debug:
-      msg: "{{ debug_error }}"
-
   - name: "add user password configuration if configured"
     import_tasks: "shiro.yml"
     when: "fuseki_shiro_users is defined and fuseki_shiro_users | length > 0"

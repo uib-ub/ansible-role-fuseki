@@ -17,9 +17,13 @@
     owner: "fuseki"
   become: true
 
-- name: "test maven version"
-  command: "mvn --version"
 
+- name: "copy maven template"
+  template:
+    src: templates/settings.xml.j2
+    dest: /home/fuseki/.m2/settings.xml
+  become: true
+  become_user: fuseki 
 - name: "get mvn module"
   shell: >
    mvn dependency:get

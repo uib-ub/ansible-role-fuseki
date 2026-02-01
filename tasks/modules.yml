@@ -32,9 +32,11 @@
   become_user: fuseki 
 - name: "get mvn module"
   shell: >
-   mvn dependency:get
+   mvn dependency:copy
    -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0
    -U
+  &&  mvn dependency:copy
+   -Dartifact=com.google.guava:guava:33.5.0-jre
   args:
     chdir: "{{ fuseki_base }}/extra"
   become: true

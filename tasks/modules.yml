@@ -33,8 +33,9 @@
 - name: "get mvn module"
   shell: >
    mvn dependency:copy
-   -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0 -DoutputDirectory={{ fuseki_base }}/extra
-   -U
+   -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0:VERSION:pom -DoutputDirectory={{ fuseki_base }}/extra
+   -Dmdep.stripVersion=true 
+   mvn -f jena-serviceenhancer.pom -Pbundle package && mv target/*.jar .
    && mvn dependency:copy
    -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
    && touch {{ fuseki_base }}/extra/.se

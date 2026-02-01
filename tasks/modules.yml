@@ -32,7 +32,7 @@
   become_user: fuseki 
 - name: "get mvn module"
   shell: >
-   mvn dependency:copy
+   mvn dependency:copy-dependencies
    -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0
    -Dtransitive=true -DoutputDirectory={{fuseki_base }}/extra/
    -U

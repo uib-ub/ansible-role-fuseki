@@ -12,8 +12,11 @@
 
     - name: "install required dependencies"
       package:
-        name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless","maven"]
+        name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless", "maven"]
       become: true
+
+    - name: "set java alternative"
+      shell: "sudo alternatives --set java /usr/lib/jvm/java-21*/bin/java"
 
     - name: "Include fuseki"
       import_role:

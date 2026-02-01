@@ -30,11 +30,11 @@
   become_user: fuseki
 
 - name: "list files in extra"
-  ansible.builtin.find:
+  find:
     paths: "{{ fuseki_base }}/extra
     age: 2d
     recurse: yes
-  register: "extra_dir"
+  register: extra_dir
 
 - name: "list files in extra"
   debug:

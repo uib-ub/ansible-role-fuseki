@@ -284,10 +284,6 @@
     debug:
       msg: "{{ debug_error }}"
 
-  - name: "fail"
-    fail:
-      msg: "skio rest of run due to error"
-
   - name: "add user password configuration if configured"
     import_tasks: "shiro.yml"
     when: "fuseki_shiro_users is defined and fuseki_shiro_users | length > 0"

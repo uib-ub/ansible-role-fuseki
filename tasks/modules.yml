@@ -32,9 +32,8 @@
   become_user: fuseki 
 - name: "get mvn module"
   shell: >
-   mvn dependency:copy-dependencies
+   mvn dependency:get
    -Dartifact=org.apache.jena:jena-serviceenhancer:6.0.0
-   -Dtransitive=true -DoutputDirectory={{fuseki_base }}/extra/
    -U
   args:
     chdir: "{{ fuseki_base }}/extra"
@@ -43,7 +42,7 @@
 
 - name: "list files in extra"
   find:
-    paths: "{{ fuseki_base }}/extra"
+    paths: "/home/fuseki/.m2"
     age: 2d
     recurse: yes
   register: extra_dir

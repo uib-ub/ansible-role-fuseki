@@ -37,22 +37,12 @@
    -U
    && mvn dependency:copy
    -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
+   && touch {{ fuseki_base }}/extra/.se
   args:
     chdir: "{{ fuseki_base }}/extra"
   become: true
+  creates: "{{ fuseki_base }}/extra/.se"
   become_user: fuseki
-
-- name: "list files in extra"
-  find:
-    paths: "/home/fuseki/.m2"
-    recurse: yes
-    file_type: file
-  register: extra_dir
-  become: true
-
-- name: "list files in extra dir"
-  debug:
-    msg: "{{ extra_dir }}" 
 
 #- name: "get serviceenhancer"
 #  get_url:

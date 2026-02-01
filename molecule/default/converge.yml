@@ -16,7 +16,8 @@
       become: true
 
     - name: "set java alternative"
-      shell: "sudo alternatives --set java /usr/lib/jvm/java-21*/bin/java"
+      shell: "alternatives --set java /usr/lib/jvm/java-21*/bin/java"
+      become: true
 
     - name: "Include fuseki"
       import_role:

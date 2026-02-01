@@ -19,6 +19,7 @@
 
 - name: "test maven version"
   command: "mvn --version"
+
 - name: "get mvn module"
   shell: >
    mvn dependency:get

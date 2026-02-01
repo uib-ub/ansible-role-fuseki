@@ -272,13 +272,6 @@
       state: started
       enabled: true
     become: true
-    ignore_errors: yes
-
-
-  - name: "debug error"
-    shell: "systemctl status fuseki.service && journalctl -xeu fuseki.service"
-    become: true
-    register: debug_error
 
   - name: "debug error output"
     debug:

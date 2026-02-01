@@ -39,9 +39,9 @@
    -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
    && touch {{ fuseki_base }}/extra/.se
   args:
+    creates: "{{ fuseki_base }}/extra/.se"
     chdir: "{{ fuseki_base }}/extra"
   become: true
-  creates: "{{ fuseki_base }}/extra/.se"
   become_user: fuseki
 
 #- name: "get serviceenhancer"

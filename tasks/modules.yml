@@ -43,11 +43,12 @@
 - name: "list files in extra"
   find:
     paths: "/home/fuseki/.m2"
-    age: 2d
     recurse: yes
+    file_type: file
   register: extra_dir
+  become: true
 
-- name: "list files in extra"
+- name: "list files in extra dir"
   debug:
     msg: "{{ extra_dir }}" 
 

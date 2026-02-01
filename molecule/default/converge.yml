@@ -15,8 +15,11 @@
         name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless", "maven"]
       become: true
 
-    - name: "set java alternative"
-      shell: "alternatives --set java /usr/lib/jvm/java-21*/bin/java"
+
+    - name: Correct java version selected
+      community.general.alternatives:
+        name: java
+        path: "/usr/lib/jvm/java-21*/bin/java"
       become: true
 
     - name: "Include fuseki"

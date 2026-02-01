@@ -12,7 +12,7 @@
 
     - name: "install required dependencies"
       package:
-        name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless"]
+        name:  ["unzip","which", "java-21-openjdk", "java-21-openjdk-headless","maven"]
       become: true
 
     - name: "Include fuseki"

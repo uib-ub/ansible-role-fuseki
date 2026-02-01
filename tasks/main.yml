@@ -276,7 +276,7 @@
 
 
   - name: "debug error"
-    shell: systemctl status fuseki.service && journalctl -xeu fuseki.service"
+    shell: "systemctl status fuseki.service && journalctl -xeu fuseki.service"
     become: true
     register: debug_error
 

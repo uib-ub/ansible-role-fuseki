@@ -17,6 +17,12 @@
     owner: "fuseki"
   become: true
 
+- name: "create .m2 dir"
+  file:
+   path: "/home/fuseki/.m2"
+   state: "directory"
+   owner: fuseki
+  become: true
 
 - name: "copy maven template"
   template:

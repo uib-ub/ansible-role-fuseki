@@ -18,6 +18,7 @@
     - name: Correct java version selected
       community.general.alternatives:
         name: java
+        link: /usr/bin/java
         path: "/usr/lib/jvm/java-21/bin/java"
       become: true
 

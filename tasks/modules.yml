@@ -24,42 +24,6 @@
    owner: fuseki
   become: true
 
-- name: "copy maven template"
-  template:
-    src: templates/settings.xml.j2
-    dest: /home/fuseki/.m2/settings.xml
-  become: true
-  become_user: fuseki 
-- name: "get mvn module"
-  shell: >
-   mvn dependency:copy
-   -Dartifact='org.apache.jena:jena-serviceenhancer:6.0.0:pom' -D'outputDirectory={{ fuseki_base }}/extra'
-   -Dmdep.stripVersion=true &&
-   mvn -f jena-serviceenhancer.pom -Pbundle package && mv target/*.jar .
-   && mvn dependency:copy
-   -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
-   && touch {{ fuseki_base }}/extra/.se
-  args:
-    creates: "{{ fuseki_base }}/extra/.se"
-    chdir: "{{ fuseki_base }}/extra"
-  become: true
-  become_user: fuseki
-
-#- name: "get serviceenhancer"
-#  get_url:
-#    url: " {{ service_enhancer_url | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/' ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}"
-#    dest: "{{ fuseki_base }}/extra"
-#  become: true
-#  become_user: fuseki
-#  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"
-
-#- name: "get guava dependency for jena service enhancer"
-#  get_url:
-#    url: "https://repo1.maven.org/maven2/com/google/guava/guava/33.2.1-jre/guava-33.2.1-jre.jar"
-#    dest: "{{ fuseki_base }}/extra"
-#  become: true
-#  when: "fuseki_configurations |  selectattr('service_enhancer', 'defined') | selectattr('service_enhancer', 'equalto', true) | list | length > 0"  
-
 - name: "Download modules to $JENA_BASE/extra"
   get_url:
     url: "{{ item }}"

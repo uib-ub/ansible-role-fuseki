@@ -17,6 +17,8 @@
     owner: "fuseki"
   become: true
 
+- name: "test maven version"
+  command: "mvn --version"
 - name: "get mvn module"
   command: >
    "mvn dependency:get

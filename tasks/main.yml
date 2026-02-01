@@ -272,7 +272,7 @@
       state: started
       enabled: true
     become: true
-    fail_on_error: false
+    ignore_errors: yes
 
 
   - name: "debug error"

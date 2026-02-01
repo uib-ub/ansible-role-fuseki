@@ -31,7 +31,7 @@
 
 - name: "list files in extra"
   find:
-    paths: "{{ fuseki_base }}/extra
+    paths: "{{ fuseki_base }}/extra"
     age: 2d
     recurse: yes
   register: extra_dir

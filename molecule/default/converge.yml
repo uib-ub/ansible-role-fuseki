@@ -19,7 +19,7 @@
       community.general.alternatives:
         name: java
         link: /usr/bin/java
-        path: "/usr/lib/jvm/java-21/bin/java"
+        path: "/usr/lib/jvm/jre-21/bin/java"
       become: true
 
     - name: "Include fuseki"

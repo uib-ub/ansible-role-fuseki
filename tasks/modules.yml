@@ -31,3 +31,15 @@
   with_items: "{{ fuseki_modules }}"
   when: "fuseki_modules is defined and fuseki_modules | length > 0"
   become: true
+
+- name: Find fuseki_extra_files in directory
+  ansible.builtin.find:
+    paths: /path/to/your/directory
+    file_type: file
+    recurse: false
+  register: fuseki_extra_files
+
+- name: Show results
+  ansible.builtin.debug:
+    var: fuseki_extra_files.files
+

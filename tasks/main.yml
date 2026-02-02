@@ -283,5 +283,17 @@
       state: "started"
     when: fuseki_service_manage | bool
     register: fuseki_started
+    ignore_errors: yes 
   when: "fuseki_present.stdout is defined and fuseki_present.stdout == 'fuseki'"
   become: true
+
+
+  - name: "debug error"
+    shell: "systemctl status fuseki.service && journalctl -xeu fuseki.service"
+    become: true
+    register: debug_error
+
+  - name: "debug error output"
+    debug:
+      msg: "{{ debug_error }}"
+

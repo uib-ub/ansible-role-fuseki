@@ -34,7 +34,7 @@
 
 - name: Find fuseki_extra_files in directory
   ansible.builtin.find:
-    paths: /path/to/your/directory
+    paths: "{{ fuseki_base }}/extra"
     file_type: file
     recurse: false
   register: fuseki_extra_files

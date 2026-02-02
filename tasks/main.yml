@@ -272,6 +272,7 @@
       state: started
       enabled: true
     become: true
+    ignore_errors: yes
 
   - name: "add user password configuration if configured"
     import_tasks: "shiro.yml"

@@ -41,12 +41,10 @@
      #   service_enhancer_url: "https://github.com/OyvindLGjesdal/jena/releases/download/service-enhancer-shaded/jena-serviceenhancer-5.2.0-SNAPSHOT.jar"
         #
         fuseki_modules:
-                #
         # sis-embedded-data packaged with shading enabled
         - "https://github.com/OyvindLGjesdal/jena/releases/download/service-enhancer-shaded/jena-sis-nonfree-1.0.jar"
         - "https://github.com/OyvindLGjesdal/jena/releases/download/jena-6-se/jena-serviceenhancer-6.0.0.jar
-
-                # - "https://repo1.maven.org/maven2/org/apache/sis/non-free/sis-embedded-data/1.4/sis-embedded-data-1.4.jar"
+        # - "https://repo1.maven.org/maven2/org/apache/sis/non-free/sis-embedded-data/1.4/sis-embedded-data-1.4.jar"
         fuseki_configurations:
         - name: "test-db_all"
           read_write: true

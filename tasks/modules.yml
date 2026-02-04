@@ -37,6 +37,11 @@
    -U
    && mvn dependency:copy
    -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
+   && mvn dependency:copy
+   -Dartifact= com.google.guava:failureaccess:1.0.3 -DoutputDirectory={{ fuseki_base }}/extra
+   -U
+   && mvn dependency:copy
+   -Dartifact=com.google.guava:guava:33.5.0-jre -DoutputDirectory={{ fuseki_base }}/extra
    && touch {{ fuseki_base }}/extra/.se
   args:
     creates: "{{ fuseki_base }}/extra/.se"

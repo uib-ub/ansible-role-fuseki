@@ -31,7 +31,7 @@
         fuseki_version: "6.0.0"
         fuseki_checksum: "8b14dcefade409bb4efd94e05291ea46d50508bf175f6f163f328d1d80183559a4c5b75806802283802a2879405a132b9b311e2277f784a784fa66ce4a9d8722"
         jena_checksum: "c66b413f0c97e465c8a5a71f2718116134c65efa71205e136a42ad0ee6d39deece0dcbcc99801d806e4b60af5fe886c72eb53c77bc464fe9d2d0f1ba2d3ec1fe"
-        fuseki_staging: true
+#        fuseki_staging: true
         fuseki_shiro_url_rules: |
             /$/status  = authcBasic,user[admin]
         fuseki_shiro_users:   

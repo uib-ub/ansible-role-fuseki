@@ -33,7 +33,8 @@
 - name: "get mvn module"
   shell: >
     mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:6.0.0:pom' -Dmdep.stripVersion=true -D'outputDirectory=/home/fuseki' &&
-    mvn dependency:copy-dependencies -f jena-serviceenhancer.pom -DincludeScope=compile -DoutputDirectory={{ fuseki_base }}/extra
+    mvn dependency:copy-dependencies -f jena-serviceenhancer.pom -DincludeScope=compile -DoutputDirectory={{ fuseki_base }}/extra &&
+    mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:6.0.0:jar' -DoutputDirectory={{ fuseki_base }}/extra
     && touch {{ fuseki_base }}/extra/.se && ls {{ fuseki_base }}/extra
   args:
     creates: "{{ fuseki_base }}/extra/.se"
@@ -49,7 +50,7 @@
 
 #- name: "get serviceenhancer"
 #  get_url:
-#    url: " {{ service_enhancer_url | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/' ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}"
+#    url: "{{ service_enhancer_url | default('https://repo1.maven.org/maven2/org/apache/jena/jena-serviceenhancer/' ~  fuseki_version ~ '/jena-serviceenhancer-' ~  fuseki_version  ~ '.jar') }}"
 #    dest: "{{ fuseki_base }}/extra"
 #  become: true
 #  become_user: fuseki

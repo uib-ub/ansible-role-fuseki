@@ -35,7 +35,8 @@
     mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:6.0.0:pom' -Dmdep.stripVersion=true -D'outputDirectory=/home/fuseki' &&
     mvn -f jena-serviceenhancer.pom -Pbundle package &&
     cp target/jena-serviceenhancer-6.0.0.jar {{ fuseki_base }}/extra
-    && touch {{ fuseki_base }}/extra/.se && ls {{ fuseki_base }}/extra
+    && touch {{ fuseki_base }}/extra/.se && ls -alh {{ fuseki_base }}/extra && 
+    cd {{ fuseki_base }}/extra && unzip jena-serviceenhancer-6.0.0.jar && ls -alh
   args:
     creates: "{{ fuseki_base }}/extra/.se"
     chdir: "/home/fuseki"

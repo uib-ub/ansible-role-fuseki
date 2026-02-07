@@ -33,7 +33,7 @@
 - name: "get mvn module"
   shell: >
     mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:6.0.0:pom' -Dmdep.stripVersion=true -D'outputDirectory=/home/fuseki' &&
-    mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:6.0.0:jar'
+    mvn dependency:copy -D'artifact=org.apache.jena:jena-serviceenhancer:6.0.0:jar' &&
      mvn -f jena-serviceenhancer.pom -Pbundle package
     && cp target/jena-serviceenhancer-6.0.0.jar {{ fuseki_base }}/extra/
     && touch {{ fuseki_base }}/extra/.se && ls -alh {{ fuseki_base }}/extra && 
